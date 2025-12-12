@@ -7,7 +7,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
+            <a class="navbar-brand" href="{{ route('items.index') }}">
                 {{ config('app.name') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -16,15 +16,15 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                           href="{{ route('dashboard') }}">
-                            {{ __('Dashboard') }}
+                        <a class="nav-link {{ request()->routeIs('items.index') ? 'active' : '' }}"
+                           href="{{ route('items.index') }}">
+                            {{ __('All Items') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('items.*') ? 'active' : '' }}"
-                           href="{{ route('items.index') }}">
-                            {{ __('All Items') }}
+                        <a class="nav-link {{ request()->routeIs('items.my') ? 'active' : '' }}"
+                           href="{{ route('items.my') }}">
+                            {{ __('My Items') }}
                         </a>
                     </li>
                     <li class="nav-item">

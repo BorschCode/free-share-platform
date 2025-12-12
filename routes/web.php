@@ -10,7 +10,8 @@ use Livewire\Volt\Volt;
 
 Route::get('/', IndexController::class)->name('home');
 
-Route::view('dashboard', 'dashboard')
+// Redirect dashboard to items index
+Route::redirect('dashboard', 'items')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -18,16 +19,15 @@ Route::middleware(['auth'])->group(function () {
 
     // ----------------------------------------------------
     // Item Routes
-    Route::get('items', [ItemController::class, 'index'])->name('items.index');
-
-    // Other item routes use the controller
-    Route::post('items', [ItemController::class, 'store'])->name('items.store');
+    Route::get('items', \App\Livewire\Items\Index::class)->name('items.index');
+    Route::get('items/my', \App\Livewire\Items\MyItems::class)->name('items.my');
     Route::get('items/create', [ItemController::class, 'create'])->name('items.create');
+    Route::post('items', [ItemController::class, 'store'])->name('items.store');
     Route::get('items/{item}', [ItemController::class, 'show'])->name('items.show');
+    Route::get('items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
     Route::put('items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::patch('items/{item}', [ItemController::class, 'update']);
     Route::delete('items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
-    Route::get('items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
     // ----------------------------------------------------
 
     // Votes

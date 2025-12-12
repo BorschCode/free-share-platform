@@ -7,23 +7,19 @@
     <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-        <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+        <a href="{{ route('items.index') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
             <x-app-logo />
         </a>
 
         <flux:navlist variant="outline">
 
-            <!-- Platform Section -->
-            <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
-                </flux:navlist.item>
-            </flux:navlist.group>
-
             <!-- Items Section -->
-            <flux:navlist.group :heading="__('Items Management')" class="grid">
-                <flux:navlist.item icon="cube" :href="route('items.index')" :current="request()->routeIs('items.*')" wire:navigate>
+            <flux:navlist.group :heading="__('Items')" class="grid">
+                <flux:navlist.item icon="cube" :href="route('items.index')" :current="request()->routeIs('items.index')" wire:navigate>
                     {{ __('All Items') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="user" :href="route('items.my')" :current="request()->routeIs('items.my')" wire:navigate>
+                    {{ __('My Items') }}
                 </flux:navlist.item>
                 <flux:navlist.item icon="plus" :href="route('items.create')" :current="request()->routeIs('items.create')" wire:navigate>
                     {{ __('Create Item') }}
