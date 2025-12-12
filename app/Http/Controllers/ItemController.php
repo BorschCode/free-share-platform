@@ -3,33 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
-use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List all items.
      */
     public function index()
     {
-        //
+        $items = Item::latest()->paginate(15);
+
+        return view('items.index', compact('items'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new item.
      */
     public function create()
     {
-        //
+        return view('items.create');
     }
 
+    /**
+     * Store a newly created item.
+     */
     public function store(StoreItemRequest $request)
     {
         $data = $request->validated();
         $data['user_id'] = auth()->id();
 
-        // Handle photos
+        // Handle multiple photo upload
         if ($request->hasFile('photos')) {
             $data['photos'] = [];
             foreach ($request->file('photos') as $photo) {
@@ -39,16 +44,40 @@ class ItemController extends Controller
         }
 
         $item = Item::create($data);
-        return redirect()->route('items.show', $item);
+
+        return redirect()
+            ->route('items.show', $item)
+            ->with('success', 'Item created successfully.');
     }
 
+    /**
+     * Display a single item.
+     */
+    public function show(Item $item)
+    {
+        return view('items.show', compact('item'));
+    }
+
+    /**
+     * Show the form for editing an item.
+     */
+    public function edit(Item $item)
+    {
+        $this->authorize('update', $item);
+
+        return view('items.edit', compact('item'));
+    }
+
+    /**
+     * Update the specified item.
+     */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        $this->authorize('update', $item); // Ensure user owns the item
+        $this->authorize('update', $item);
 
         $data = $request->validated();
 
-        // Handle photos if uploaded
+        // Handle new photos
         if ($request->hasFile('photos')) {
             $data['photos'] = [];
             foreach ($request->file('photos') as $photo) {
@@ -58,31 +87,23 @@ class ItemController extends Controller
         }
 
         $item->update($data);
-        return redirect()->route('items.show', $item);
-    }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Item $item)
-    {
-        //
+        return redirect()
+            ->route('items.show', $item)
+            ->with('success', 'Item updated successfully.');
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Item $item)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Delete an item.
      */
     public function destroy(Item $item)
     {
-        //
+        $this->authorize('delete', $item);
+
+        $item->delete();
+
+        return redirect()
+            ->route('items.index')
+            ->with('success', 'Item deleted.');
     }
 }
