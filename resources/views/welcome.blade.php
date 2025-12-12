@@ -24,13 +24,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 72px;          /* Larger badge */
-            height: 72px;         /* Larger badge */
+            width: 72px; /* Larger badge */
+            height: 72px; /* Larger badge */
             background: linear-gradient(145deg, #1f2430, #171b23);
             border: 1px solid #2f3644;
             border-radius: 1.25rem;
-            font-size: 36px;      /* Larger emoji */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            font-size: 36px; /* Larger emoji */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
         }
     </style>
 </head>
@@ -57,83 +57,79 @@
 
     </header>
 
-
-    <!-- Features Section -->
+    <!-- Latest Available Items -->
     <section class="mt-12">
         <h2 class="text-4xl font-bold text-center text-gray-100 mb-10 tracking-tight">
-            ✨ Key Features
+            📦 Latest Available Items
         </h2>
 
-        <!-- Grid for Feature Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        @if($items->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($items as $item)
+                    <div
+                        class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                        <img
+                            src="{{ $item->getFirstPhotoUrlOrPlaceholder() }}"
+                            alt="{{ $item->title }}"
+                            class="w-full h-48 object-cover"
+                        >
 
-            <!-- Feature 1: Authentication -->
-            <div class="feature-card p-8">
-                <div class="text-4xl feature-icon mb-4">🔐</div>
-                <!-- Updated feature title color to match the new scheme (e.g., orange-400) -->
-                <h3 class="text-2xl font-bold text-orange-400 mb-3 border-b border-gray-700 pb-2">Authentication</h3>
-                <p class="text-gray-400">Secure access and control over content.</p>
-                <ul class="mt-4 space-y-2 text-gray-300 ml-4 list-disc list-inside">
-                    <li>Only registered users can access the main application.</li>
-                    <li>Guests are guided to log in or register immediately.</li>
-                </ul>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">{{ $item->title }}</h3>
+                            <p class="text-gray-400 text-sm mb-4">
+                                {{ Str::limit($item->description, 100) }}
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span
+                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">{{ $item->category }}</span>
+                                <span
+                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">{{ $item->city }}</span>
+                                <span
+                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">{{ $item->status->label() }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span>By {{ $item->user->name }}</span>
+                                <div class="flex gap-3">
+                                    <span>👍 {{ $item->votes->where('vote', 1)->count() }}</span>
+                                    <span>💬 {{ $item->comments->count() }}</span>
+                                </div>
+                            </div>
+
+                            <a
+                                href="{{ route('items.show', $item) }}"
+                                class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
+                            >
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
             </div>
 
-            <!-- Feature 2: Item Listings -->
-            <div class="feature-card p-8">
-                <div class="text-4xl feature-icon mb-4">📦</div>
-                <h3 class="text-2xl font-bold text-orange-400 mb-3 border-b border-gray-700 pb-2">Item Listings & Management</h3>
-
-                <p class="text-gray-400 font-semibold mt-4">Each item includes:</p>
-                <ul class="mt-2 space-y-1 text-gray-300 ml-4 list-disc list-inside">
-                    <li>Title, description, category, and city.</li>
-                    <li>Optional: Weight & dimensions.</li>
-                    <li>One or more photos.</li>
-                    <li>Status: <span class="text-green-500 font-bold">available</span> or <span class="text-red-500 font-bold">gifted</span>.</li>
-                </ul>
-
-                <p class="text-gray-400 font-semibold mt-4">Users can:</p>
-                <ul class="mt-2 space-y-1 text-gray-300 ml-4 list-disc list-inside">
-                    <li>Create new listings easily.</li>
-                    <li>Edit their own posts.</li>
-                    <li>Mark items as *gifted* upon exchange.</li>
-                </ul>
+            @auth
+                <div class="text-center mt-8">
+                    <a
+                        href="{{ route('items.index') }}"
+                        class="inline-block px-6 py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition duration-200"
+                    >
+                        View All Items →
+                    </a>
+                </div>
+            @endauth
+        @else
+            <div class="text-center p-12 bg-gray-900 rounded-xl border border-gray-800">
+                <p class="text-gray-400 text-lg">No items available at the moment. Check back soon!</p>
             </div>
-
-            <!-- Feature 3: Browsing & Filtering -->
-            <div class="feature-card p-8">
-                <div class="text-4xl feature-icon mb-4">🔍</div>
-                <h3 class="text-2xl font-bold text-orange-400 mb-3 border-b border-gray-700 pb-2">Browsing & Filtering</h3>
-                <p class="text-gray-400">Find exactly what you need, fast.</p>
-                <ul class="mt-4 space-y-2 text-gray-300 ml-4 list-disc list-inside">
-                    <li>Paginated item list with thumbnails.</li>
-                    <li>Filter by category, city, or status.</li>
-                    <li>Full-text search (title / description).</li>
-                    <li>Sorting options: newest / most upvoted.</li>
-                </ul>
-            </div>
-
-            <!-- Feature 4: Item Details & Community -->
-            <div class="feature-card p-8">
-                <div class="text-4xl feature-icon mb-4">📝</div>
-                <h3 class="text-2xl font-bold text-orange-400 mb-3 border-b border-gray-700 pb-2">Item Details & Interaction</h3>
-                <p class="text-gray-400">A dedicated space for every item.</p>
-                <ul class="mt-4 space-y-2 text-gray-300 ml-4 list-disc list-inside">
-                    <li>Full description and photo gallery.</li>
-                    <li>Owner information and contact.</li>
-                    <li>Integrated comments section.</li>
-                    <li>Voting controls to highlight great items.</li>
-                    <li>Clear “Gifted” status badge when claimed.</li>
-                </ul>
-            </div>
-
-        </div>
+        @endif
     </section>
 
     <!-- Call to Action (Optional, but good for design) -->
     <div class="text-center mt-16 p-8 bg-gray-900 rounded-xl shadow-inner">
         <!-- Updated CTA button color from green to orange -->
-        <a href="{{route('register')}}" class="inline-block px-8 py-3 text-lg font-semibold rounded-lg bg-orange-600 text-white shadow-lg hover:bg-orange-700 transition duration-200">
+        <a href="{{route('register')}}"
+           class="inline-block px-8 py-3 text-lg font-semibold rounded-lg bg-orange-600 text-white shadow-lg hover:bg-orange-700 transition duration-200">
             Get Started Now
         </a>
         <p class="mt-3 text-sm text-gray-500">Join the community and start sharing.</p>

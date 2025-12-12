@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\ItemStatus;
 use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Enums\ItemStatus;
 
 class ItemFactory extends Factory
 {
@@ -44,7 +44,7 @@ class ItemFactory extends Factory
             'category' => $this->faker->randomElement(['Electronics', 'Books', 'Furniture', 'Apparel', 'Tools']),
             'city' => $this->faker->city(),
             'weight' => $this->faker->randomFloat(2, 0.1, 50),
-            'dimensions' => $this->faker->numberBetween(10, 100) . 'x' . $this->faker->numberBetween(10, 100) . 'x' . $this->faker->numberBetween(10, 100), // L x W x H
+            'dimensions' => $this->faker->numberBetween(10, 100).'x'.$this->faker->numberBetween(10, 100).'x'.$this->faker->numberBetween(10, 100), // L x W x H
             'photos' => $photosArray,
             // Use the integer value of the random Enum case
             'status' => $randomStatus->value,
