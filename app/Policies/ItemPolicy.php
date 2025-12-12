@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Item;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ItemPolicy
 {
@@ -46,6 +45,7 @@ class ItemPolicy
     {
         return $user->id === $item->user_id;
     }
+
     /**
      * Determine whether the user can restore the model.
      */

@@ -30,14 +30,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
     // ----------------------------------------------------
 
-
-// Votes
+    // Votes
     Route::post('items/{item}/vote', [VoteController::class, 'store'])
         ->name('items.vote');
 
     Route::delete('items/{item}/vote', [VoteController::class, 'destroy'])
         ->name('items.vote.remove');
-// Comments
+    // Comments
     Route::post('items/{item}/comments', [CommentController::class, 'store'])
         ->name('items.comments.store');
 

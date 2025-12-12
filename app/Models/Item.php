@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vote> $votes
  * @property-read int|null $votes_count
+ *
  * @method static Builder<static>|Item available()
  * @method static Builder<static>|Item byStatus(\App\Enums\ItemStatus $status)
  * @method static Builder<static>|Item claimed()
@@ -50,6 +51,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder<static>|Item whereUpdatedAt($value)
  * @method static Builder<static>|Item whereUserId($value)
  * @method static Builder<static>|Item whereWeight($value)
+ *
  * @mixin \Eloquent
  */
 class Item extends Model
