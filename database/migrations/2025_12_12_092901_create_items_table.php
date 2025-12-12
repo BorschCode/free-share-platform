@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\ItemStatus; // Import the newly created Enum
 
 return new class extends Migration
 {
@@ -18,7 +19,12 @@ return new class extends Migration
             $table->decimal('weight', 8, 2)->nullable();
             $table->string('dimensions')->nullable();
             $table->json('photos')->nullable(); // Store multiple photo paths
-            $table->enum('status', ['available', 'gifted'])->default('available');
+
+            // 1. New integer column for status
+            $table->unsignedTinyInteger('status')
+                ->default(ItemStatus::Available->value) // Use the Enum value as the default
+                ->comment('1: Available, 2: Gifted'); // Add comment for DB management
+
             $table->timestamps();
         });
     }

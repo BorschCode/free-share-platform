@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Enums\ItemStatus;
 
 class ItemFactory extends Factory
 {
@@ -23,20 +24,19 @@ class ItemFactory extends Factory
     {
         $title = $this->faker->unique()->words(3, true);
 
-        // Random image ID between 1-1000 for variety
         $imageId = $this->faker->numberBetween(1, 1000);
 
-        // Random dimensions for more variety
         $width = $this->faker->randomElement([400, 500, 600]);
         $height = $this->faker->randomElement([300, 400, 450]);
 
-        // Create an array of 1 to 3 unique image URLs
         $photosArray = [];
         $photoCount = $this->faker->numberBetween(1, 3);
         for ($i = 0; $i < $photoCount; $i++) {
             $currentImageId = $imageId + $i; // Use unique IDs for each photo in the array
             $photosArray[] = "https://picsum.photos/id/{$currentImageId}/{$width}/{$height}";
         }
+
+        $randomStatus = $this->faker->randomElement(ItemStatus::cases());
 
         return [
             'title' => $title,
@@ -46,8 +46,8 @@ class ItemFactory extends Factory
             'weight' => $this->faker->randomFloat(2, 0.1, 50),
             'dimensions' => $this->faker->numberBetween(10, 100) . 'x' . $this->faker->numberBetween(10, 100) . 'x' . $this->faker->numberBetween(10, 100), // L x W x H
             'photos' => $photosArray,
-            'status' => $this->faker->randomElement(['available', 'gifted']),
-            // 'user_id' will be set by the seeder
+            // Use the integer value of the random Enum case
+            'status' => $randomStatus->value,
         ];
     }
 }

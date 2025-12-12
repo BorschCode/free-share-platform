@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ItemStatus; // <-- 1. Додайте імпорт вашого Enum
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property numeric|null $weight
  * @property string|null $dimensions
  * @property array<array-key, mixed>|null $photos
- * @property string $status
+ * @property ItemStatus $status 1: Available, 2: Gifted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
@@ -61,22 +62,20 @@ class Item extends Model
     ];
 
     protected $casts = [
-        'photos' => 'array', // Automatically cast JSON to array
+        'photos' => 'array',
+        'status' => ItemStatus::class,
     ];
 
-    // Item belongs to a user
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    // Optional: comments relation
     public function comments(): Builder|HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    // Optional: votes relation
     public function votes(): Builder|HasMany
     {
         return $this->hasMany(Vote::class);
