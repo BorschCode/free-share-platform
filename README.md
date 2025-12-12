@@ -1,10 +1,11 @@
 # 🎁 Freecycle Listings Platform
 
+
 ![Laravel](https://img.shields.io/badge/Laravel-12-red?style=flat-square)
 ![PHP](https://img.shields.io/badge/PHP-8.5-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-BSD%203--Clause-green?style=flat-square)
 ![Docker](https://img.shields.io/badge/Docker-Compose-orange?style=flat-square)
-![GitHub Actions](https://github.com/BorschCode/free-share-platform/workflows/CI/badge.svg)
+![GitHub Actions](https://github.com/BorschCode/free-share-platform/actions/workflows/ci.yml/badge.svg)
 ![Latest Release](https://img.shields.io/github/v/release/BorschCode/free-share-platform?style=flat-square)
 
 
@@ -12,10 +13,31 @@
 
 ## 🎯 Project Overview
 
-A lightweight **Laravel + Livewire** application where registered users can give away items for free.  
-Other users can browse listings, vote, and comment — creating a simple, **community-driven exchange platform**.
+**Freecycle Listings Platform** is a community-driven **Laravel + Livewire** application where registered users can give away items for free.
+
+Key aspects of the platform:
+
+- Users can **browse, filter, and search** listings by category, city, status, or keyword.
+- Each item has **attributes** such as title, description, category, city, photos, and status (Available / Gifted / Pending / Moderating / Claimed / Refused).
+- Users can **create, edit, and delete** their own listings.
+- Listings include **votes and comments**, enabling community feedback and interaction.
+- Filters include:
+    - **Text search** by title or description
+    - **Category and City** selection
+    - **Status filter** (Available / Gifted / etc.)
+    - **Sort options** (Newest, Oldest, Most Upvoted)
+- Users see **toast notifications** when performing actions like updating or deleting listings.
+- **Authorization** ensures that only item owners can update or delete their listings.
+- Admins can moderate items and users.
+
+This creates a **clean, interactive platform** for giving away items while maintaining a structured and safe community environment.
+
+[Live preview](https://borschcode.github.io/free-share-platform/index.html)
+
+
 
 ![Preview](./docs/index.png)
+![Preview](./docs/items-list.png)
 
 ---
 
