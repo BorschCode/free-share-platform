@@ -1,9 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/livewire-starter-kit",
+    "name": "borsch-code/free-share-platform",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
-    "keywords": [
+    "description": "A simple web app where users can give away items for free, browse listings, vote, and comment.",    "keywords": [
         "laravel",
         "framework"
     ],
