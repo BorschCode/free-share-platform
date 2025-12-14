@@ -111,6 +111,33 @@
                                 @enderror
                             </div>
 
+                            <!-- Tags -->
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('Tags') }}</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach($tags as $tag)
+                                        <div class="form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="tags[]"
+                                                value="{{ $tag->id }}"
+                                                id="tag-{{ $tag->id }}"
+                                                {{ in_array($tag->id, old('tags', [])) ? 'checked' : '' }}
+                                            >
+                                            <label class="form-check-label" for="tag-{{ $tag->id }}">
+                                                <span class="badge" style="background-color: {{ $tag->color }}; color: #fff;">
+                                                    {{ $tag->name }}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                @error('tags')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <!-- Photos -->
                             <div class="mb-3">
                                 <label for="photos" class="form-label">{{ __('Photos') }}</label>

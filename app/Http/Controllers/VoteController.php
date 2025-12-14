@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Vote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class VoteController extends Controller
 {
@@ -14,8 +15,12 @@ class VoteController extends Controller
             'vote' => 'required|integer|in:-1,1',
         ]);
 
-        // Policy handles all checks (duplicate votes, owner voting, etc.)
-        $this->authorize('create', [Vote::class, $item]);
+        // Check authorization using policy
+        $response = Gate::inspect('create', [Vote::class, $item]);
+
+        if ($response->denied()) {
+            return back()->with('error', $response->message());
+        }
 
         Vote::create([
             'item_id' => $item->id,

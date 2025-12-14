@@ -69,6 +69,18 @@
                                     <p class="text-muted">{{ $item->dimensions }}</p>
                                 </div>
                             @endif
+                            @if($item->tags->isNotEmpty())
+                                <div class="col-12">
+                                    <h6>{{ __('Tags') }}</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($item->tags as $tag)
+                                            <span class="badge" style="background-color: {{ $tag->color }}; color: #fff;">
+                                                {{ $tag->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

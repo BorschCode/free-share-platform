@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
+use App\Models\Tag;
 
 class ItemController extends Controller
 {
@@ -23,7 +24,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return view('items.create');
+        $tags = Tag::all();
+
+        return view('items.create', compact('tags'));
     }
 
     /**
@@ -45,6 +48,11 @@ class ItemController extends Controller
 
         $item = Item::create($data);
 
+        // Sync tags
+        if ($request->has('tags')) {
+            $item->tags()->sync($request->input('tags'));
+        }
+
         return redirect()
             ->route('items.show', $item)
             ->with('success', 'Item created successfully.');
@@ -65,7 +73,9 @@ class ItemController extends Controller
     {
         $this->authorize('update', $item);
 
-        return view('items.edit', compact('item'));
+        $tags = Tag::all();
+
+        return view('items.edit', compact('item', 'tags'));
     }
 
     /**
@@ -87,6 +97,13 @@ class ItemController extends Controller
         }
 
         $item->update($data);
+
+        // Sync tags
+        if ($request->has('tags')) {
+            $item->tags()->sync($request->input('tags'));
+        } else {
+            $item->tags()->detach();
+        }
 
         return redirect()
             ->route('items.show', $item)

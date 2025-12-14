@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Comment;
 use App\Models\Item;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Seeder;
@@ -12,6 +13,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Seed tags first
+        $this->call(TagSeeder::class);
+
         User::firstOrCreate(['email' => 'test@example.com'], ['name' => 'Test User', 'password' => bcrypt('password'), 'email_verified_at' => now()]);
         User::firstOrCreate(['email' => 'admin@test.com'], ['name' => 'Admin User', 'password' => bcrypt('password'), 'email_verified_at' => now()]);
         User::firstOrCreate(['email' => 'jane@test.com'], ['name' => 'Jane Doe', 'password' => bcrypt('password'), 'email_verified_at' => now()]);
@@ -39,5 +43,13 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $testUser->id,
                 ]);
         }
+
+        // Attach random tags to items
+        $tags = Tag::all();
+        Item::all()->each(function (Item $item) use ($tags) {
+            $item->tags()->attach(
+                $tags->random(mt_rand(0, 3))->pluck('id')->toArray()
+            );
+        });
     }
 }

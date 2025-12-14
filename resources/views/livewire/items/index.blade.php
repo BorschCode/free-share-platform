@@ -98,6 +98,16 @@
                             </span>
                         </div>
 
+                        @if($item->tags->isNotEmpty())
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                @foreach($item->tags as $tag)
+                                    <span class="badge" style="background-color: {{ $tag->color }}; color: #fff;">
+                                        {{ $tag->name }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
+
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 {{ __('By') }} {{ $item->user->name }}
