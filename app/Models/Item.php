@@ -65,8 +65,8 @@ class Item extends Model
     protected $fillable = [
         'title',
         'description',
-        'category',
-        'city',
+        'category_id',
+        'city_id',
         'weight',
         'dimensions',
         'photos',
@@ -99,6 +99,16 @@ class Item extends Model
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
     /**
      * Scope to filter items by status.
      */
@@ -123,7 +133,6 @@ class Item extends Model
         return $query->byStatus(ItemStatus::Gifted);
     }
 
-
     /**
      * Check if item has any photos.
      */
@@ -137,7 +146,7 @@ class Item extends Model
      */
     public function getPhotoUrl(int $index = 0): ?string
     {
-        if (!isset($this->photos[$index]) || blank($this->photos[$index])) {
+        if (! isset($this->photos[$index]) || blank($this->photos[$index])) {
             return null;
         }
 
@@ -163,12 +172,12 @@ class Item extends Model
      */
     public function getAllPhotoUrls(): array
     {
-        if (!$this->hasPhotos()) {
+        if (! $this->hasPhotos()) {
             return [];
         }
 
         return array_values(array_filter(
-            array_map(fn($index) => $this->getPhotoUrl($index), array_keys($this->photos))
+            array_map(fn ($index) => $this->getPhotoUrl($index), array_keys($this->photos))
         ));
     }
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Models\Category;
+use App\Models\City;
 use App\Models\Item;
 use App\Models\Tag;
 
@@ -24,9 +26,11 @@ class ItemController extends Controller
      */
     public function create()
     {
+        $categories = Category::whereNull('parent_id')->with('children')->get();
+        $cities = City::orderBy('name')->get();
         $tags = Tag::all();
 
-        return view('items.create', compact('tags'));
+        return view('items.create', compact('categories', 'cities', 'tags'));
     }
 
     /**
@@ -73,9 +77,11 @@ class ItemController extends Controller
     {
         $this->authorize('update', $item);
 
+        $categories = Category::whereNull('parent_id')->with('children')->get();
+        $cities = City::orderBy('name')->get();
         $tags = Tag::all();
 
-        return view('items.edit', compact('item', 'tags'));
+        return view('items.edit', compact('item', 'categories', 'cities', 'tags'));
     }
 
     /**

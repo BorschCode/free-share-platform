@@ -13,8 +13,12 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Seed tags first
-        $this->call(TagSeeder::class);
+        // Seed independent entities first
+        $this->call([
+            TagSeeder::class,
+            CategorySeeder::class,
+            CitySeeder::class,
+        ]);
 
         User::firstOrCreate(['email' => 'test@example.com'], ['name' => 'Test User', 'password' => bcrypt('password'), 'email_verified_at' => now()]);
         User::firstOrCreate(['email' => 'admin@test.com'], ['name' => 'Admin User', 'password' => bcrypt('password'), 'email_verified_at' => now()]);

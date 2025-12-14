@@ -46,34 +46,46 @@
 
                             <!-- Category -->
                             <div class="mb-3">
-                                <label for="category" class="form-label">{{ __('Category') }} <span class="text-danger">*</span></label>
-                                <input
-                                    type="text"
-                                    class="form-control @error('category') is-invalid @enderror"
-                                    id="category"
-                                    name="category"
-                                    value="{{ old('category') }}"
+                                <label for="category_id" class="form-label">{{ __('Category') }} <span class="text-danger">*</span></label>
+                                <select
+                                    class="form-select @error('category_id') is-invalid @enderror"
+                                    id="category_id"
+                                    name="category_id"
                                     required
-                                    maxlength="100"
                                 >
-                                @error('category')
+                                    <option value="">{{ __('Select a category') }}</option>
+                                    @foreach($categories as $category)
+                                        <optgroup label="{{ $category->name }}">
+                                            @foreach($category->children as $child)
+                                                <option value="{{ $child->id }}" {{ old('category_id') == $child->id ? 'selected' : '' }}>
+                                                    {{ $child->name }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- City -->
                             <div class="mb-3">
-                                <label for="city" class="form-label">{{ __('City') }} <span class="text-danger">*</span></label>
-                                <input
-                                    type="text"
-                                    class="form-control @error('city') is-invalid @enderror"
-                                    id="city"
-                                    name="city"
-                                    value="{{ old('city') }}"
+                                <label for="city_id" class="form-label">{{ __('City') }} <span class="text-danger">*</span></label>
+                                <select
+                                    class="form-select @error('city_id') is-invalid @enderror"
+                                    id="city_id"
+                                    name="city_id"
                                     required
-                                    maxlength="100"
                                 >
-                                @error('city')
+                                    <option value="">{{ __('Select a city') }}</option>
+                                    @foreach($cities as $city)
+                                        <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                            {{ $city->name }} ({{ $city->postal_code }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('city_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

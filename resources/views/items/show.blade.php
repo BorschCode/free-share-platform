@@ -51,11 +51,17 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <h6>{{ __('Category') }}</h6>
-                                <p class="text-muted">{{ $item->category }}</p>
+                                <p class="text-muted">{{ $item->category?->name ?? __('Uncategorized') }}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6>{{ __('City') }}</h6>
-                                <p class="text-muted">{{ $item->city }}</p>
+                                <p class="text-muted">
+                                    @if($item->city)
+                                        {{ $item->city->name }} ({{ $item->city->postal_code }})
+                                    @else
+                                        {{ __('No city specified') }}
+                                    @endif
+                                </p>
                             </div>
                             @if($item->weight)
                                 <div class="col-md-6">

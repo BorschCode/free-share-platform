@@ -91,8 +91,12 @@
                         </p>
 
                         <div class="d-flex flex-wrap gap-2 mb-2">
-                            <span class="badge bg-info">{{ $item->category }}</span>
-                            <span class="badge bg-secondary">{{ $item->city }}</span>
+                            @if($item->category)
+                                <span class="badge bg-info">{{ $item->category->name }}</span>
+                            @endif
+                            @if($item->city)
+                                <span class="badge bg-secondary">{{ $item->city->name }}</span>
+                            @endif
                             <span class="badge {{ $item->status === App\Enums\ItemStatus::Available ? 'bg-success' : 'bg-warning' }}">
                                 {{ $item->status->label() }}
                             </span>

@@ -14,8 +14,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->string('city');
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('city_id')->nullable()->constrained()->nullOnDelete();
             $table->decimal('weight', 8, 2)->nullable();
             $table->string('dimensions')->nullable();
             $table->json('photos')->nullable();
