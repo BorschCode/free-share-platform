@@ -4,9 +4,10 @@
 ![Laravel](https://img.shields.io/badge/Laravel-12-red?style=flat-square)
 ![PHP](https://img.shields.io/badge/PHP-8.5-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-BSD%203--Clause-green?style=flat-square)
-![Docker](https://img.shields.io/badge/Docker-Compose-orange?style=flat-square)
-![GitHub Actions](https://github.com/BorschCode/free-share-platform/actions/workflows/ci.yml/badge.svg)
+![Docker](https://img.shields.io/badge/Docker-Compose-yellow?style=flat-square)
 ![Latest Release](https://img.shields.io/github/v/release/BorschCode/free-share-platform?style=flat-square)
+![Linter](https://github.com/BorschCode/free-share-platform/actions/workflows/lint.yml/badge.svg)
+![Tests](https://github.com/BorschCode/free-share-platform/actions/workflows/tests.yml/badge.svg)
 
 
 ---
