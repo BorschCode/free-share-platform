@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\User $user
  *
+ * @method static \Database\Factories\VoteFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote query()

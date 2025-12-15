@@ -51,11 +51,17 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <h6>{{ __('Category') }}</h6>
-                                <p class="text-muted">{{ $item->category }}</p>
+                                <p class="text-muted">{{ $item->category?->name ?? __('Uncategorized') }}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6>{{ __('City') }}</h6>
-                                <p class="text-muted">{{ $item->city }}</p>
+                                <p class="text-muted">
+                                    @if($item->city)
+                                        {{ $item->city->name }} ({{ $item->city->postal_code }})
+                                    @else
+                                        {{ __('No city specified') }}
+                                    @endif
+                                </p>
                             </div>
                             @if($item->weight)
                                 <div class="col-md-6">
@@ -67,6 +73,18 @@
                                 <div class="col-md-6">
                                     <h6>{{ __('Dimensions') }}</h6>
                                     <p class="text-muted">{{ $item->dimensions }}</p>
+                                </div>
+                            @endif
+                            @if($item->tags->isNotEmpty())
+                                <div class="col-12">
+                                    <h6>{{ __('Tags') }}</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach($item->tags as $tag)
+                                            <span class="badge" style="background-color: {{ $tag->color }}; color: #fff;">
+                                                {{ $tag->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
                                 </div>
                             @endif
                         </div>

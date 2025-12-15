@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\ItemStatus;
+use App\Models\Category;
+use App\Models\City;
 use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -41,12 +43,11 @@ class ItemFactory extends Factory
         return [
             'title' => $title,
             'description' => $this->faker->paragraph(3),
-            'category' => $this->faker->randomElement(['Electronics', 'Books', 'Furniture', 'Apparel', 'Tools']),
-            'city' => $this->faker->city(),
+            'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
+            'city_id' => City::inRandomOrder()->first()?->id ?? City::factory(),
             'weight' => $this->faker->randomFloat(2, 0.1, 50),
-            'dimensions' => $this->faker->numberBetween(10, 100).'x'.$this->faker->numberBetween(10, 100).'x'.$this->faker->numberBetween(10, 100), // L x W x H
+            'dimensions' => $this->faker->numberBetween(10, 100).'x'.$this->faker->numberBetween(10, 100).'x'.$this->faker->numberBetween(10, 100),
             'photos' => $photosArray,
-            // Use the integer value of the random Enum case
             'status' => $randomStatus->value,
         ];
     }

@@ -7,7 +7,6 @@
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <!-- Search -->
                         <div class="col-md-6">
                             <label for="search" class="form-label">{{ __('Search') }}</label>
                             <input
@@ -19,7 +18,6 @@
                             >
                         </div>
 
-                        <!-- Sort -->
                         <div class="col-md-6">
                             <label for="sort" class="form-label">{{ __('Sort By') }}</label>
                             <select class="form-select" id="sort" wire:model.live="sort">
@@ -28,29 +26,26 @@
                             </select>
                         </div>
 
-                        <!-- Category -->
                         <div class="col-md-4">
                             <label for="category" class="form-label">{{ __('Category') }}</label>
                             <select class="form-select" id="category" wire:model.live="category">
                                 <option value="">{{ __('All Categories') }}</option>
-                                @foreach($categories as $cat)
-                                    <option value="{{ $cat }}">{{ $cat }}</option>
+                                @foreach($categoryOptions as $cat) // <-- Corrected
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <!-- City -->
                         <div class="col-md-4">
                             <label for="city" class="form-label">{{ __('City') }}</label>
                             <select class="form-select" id="city" wire:model.live="city">
                                 <option value="">{{ __('All Cities') }}</option>
-                                @foreach($cities as $cityOption)
-                                    <option value="{{ $cityOption }}">{{ $cityOption }}</option>
+                                @foreach($cityOptions as $cityOption) // <-- Corrected
+                                <option value="{{ $cityOption->id }}">{{ $cityOption->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <!-- Status -->
                         <div class="col-md-4">
                             <label for="status" class="form-label">{{ __('Status') }}</label>
                             <select class="form-select" id="status" wire:model.live="status">
@@ -60,7 +55,6 @@
                             </select>
                         </div>
 
-                        <!-- Reset Filters -->
                         <div class="col-12">
                             <button type="button" class="btn btn-outline-secondary" wire:click="resetFilters">
                                 {{ __('Reset Filters') }}
@@ -72,7 +66,6 @@
         </div>
     </div>
 
-    <!-- Items Grid -->
     <div class="row g-4">
         @forelse($items as $item)
             <div class="col-md-6 col-lg-4" wire:key="item-{{ $item->id }}">
@@ -91,12 +84,26 @@
                         </p>
 
                         <div class="d-flex flex-wrap gap-2 mb-2">
-                            <span class="badge bg-info">{{ $item->category }}</span>
-                            <span class="badge bg-secondary">{{ $item->city }}</span>
+                            @if($item->category)
+                                <span class="badge bg-info">{{ $item->category->name }}</span>
+                            @endif
+                            @if($item->city)
+                                <span class="badge bg-secondary">{{ $item->city->name }}</span>
+                            @endif
                             <span class="badge {{ $item->status === App\Enums\ItemStatus::Available ? 'bg-success' : 'bg-warning' }}">
                                 {{ $item->status->label() }}
                             </span>
                         </div>
+
+                        @if(isset($item->tags) && $item->tags->isNotEmpty())
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                @foreach($item->tags as $tag)
+                                    <span class="badge" style="background-color: {{ $tag->color ?? '#6c757d' }}; color: #fff;">
+                                        {{ $tag->name }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
 
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
@@ -136,7 +143,6 @@
         @endforelse
     </div>
 
-    <!-- Pagination -->
     <div class="mt-4">
         {{ $items->links('pagination::bootstrap-5') }}
     </div>

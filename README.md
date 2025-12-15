@@ -77,7 +77,13 @@ cp .env.example .env
 ./vendor/bin/sail artisan migrate --seed
 ```
 
-5️⃣ **Access the Application**
+5️⃣ **Create Storage Symlink**
+
+```bash
+docker compose run --rm php php artisan storage:link
+```
+
+6️⃣ **Access the Application**
 
 * **App:** [http://localhost:8059](http://localhost:8059)
 * **Mailpit (Email Testing):** [http://localhost:8025](http://localhost:8025)

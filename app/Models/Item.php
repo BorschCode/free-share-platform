@@ -2,45 +2,47 @@
 
 namespace App\Models;
 
-use App\Enums\ItemStatus; // <-- 1. Додайте імпорт вашого Enum
+use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
  * @property int $user_id
  * @property string $title
  * @property string $description
- * @property string $category
- * @property string $city
+ * @property int|null $category_id
+ * @property int|null $city_id
  * @property numeric|null $weight
  * @property string|null $dimensions
  * @property array<array-key, mixed>|null $photos
  * @property ItemStatus $status 1: Available, 2: Gifted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Category|null $category
+ * @property-read \App\Models\City|null $city
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vote> $votes
  * @property-read int|null $votes_count
  *
  * @method static Builder<static>|Item available()
  * @method static Builder<static>|Item byStatus(\App\Enums\ItemStatus $status)
- * @method static Builder<static>|Item claimed()
  * @method static \Database\Factories\ItemFactory factory($count = null, $state = [])
  * @method static Builder<static>|Item gifted()
- * @method static Builder<static>|Item moderating()
  * @method static Builder<static>|Item newModelQuery()
  * @method static Builder<static>|Item newQuery()
- * @method static Builder<static>|Item pending()
  * @method static Builder<static>|Item query()
- * @method static Builder<static>|Item refused()
- * @method static Builder<static>|Item whereCategory($value)
- * @method static Builder<static>|Item whereCity($value)
+ * @method static Builder<static>|Item whereCategoryId($value)
+ * @method static Builder<static>|Item whereCityId($value)
  * @method static Builder<static>|Item whereCreatedAt($value)
  * @method static Builder<static>|Item whereDescription($value)
  * @method static Builder<static>|Item whereDimensions($value)
@@ -58,11 +60,13 @@ class Item extends Model
 {
     use HasFactory;
 
+    public const PLACEHOLDER_IMAGE_URL = 'https://via.placeholder.com/400x300/1f2937/9ca3af?text=No+Image';
+
     protected $fillable = [
         'title',
         'description',
-        'category',
-        'city',
+        'category_id',
+        'city_id',
         'weight',
         'dimensions',
         'photos',
@@ -80,116 +84,89 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments(): Builder|HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function votes(): Builder|HasMany
+    public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
     }
 
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
     /**
-     * Scope to filter items by status
+     * Scope to filter items by status.
      */
     public function scopeByStatus(Builder $query, ItemStatus $status): Builder
     {
-        return $query->where('status', $status->value);
+        return $query->where('status', $status);
     }
 
     /**
-     * Scope to get only available items
+     * Scope to get only available items.
      */
     public function scopeAvailable(Builder $query): Builder
     {
-        return $query->where('status', ItemStatus::Available->value);
+        return $query->byStatus(ItemStatus::Available);
     }
 
     /**
-     * Scope to get only gifted items
+     * Scope to get only gifted items.
      */
     public function scopeGifted(Builder $query): Builder
     {
-        return $query->where('status', ItemStatus::Gifted->value);
+        return $query->byStatus(ItemStatus::Gifted);
     }
 
     /**
-     * Scope to get only pending items
-     */
-    public function scopePending(Builder $query): Builder
-    {
-        return $query->where('status', ItemStatus::Pending->value);
-    }
-
-    /**
-     * Scope to get only moderating items
-     */
-    public function scopeModerating(Builder $query): Builder
-    {
-        return $query->where('status', ItemStatus::Moderating->value);
-    }
-
-    /**
-     * Scope to get only claimed items
-     */
-    public function scopeClaimed(Builder $query): Builder
-    {
-        return $query->where('status', ItemStatus::Claimed->value);
-    }
-
-    /**
-     * Scope to get only refused items
-     */
-    public function scopeRefused(Builder $query): Builder
-    {
-        return $query->where('status', ItemStatus::Refused->value);
-    }
-
-    /**
-     * Check if item has photos
+     * Check if item has any photos.
      */
     public function hasPhotos(): bool
     {
-        return ! empty($this->photos) && is_array($this->photos) && count($this->photos) > 0;
+        return filled($this->photos);
     }
 
     /**
-     * Get the URL for a photo at the given index
+     * Get the URL for a photo at the given index.
      */
     public function getPhotoUrl(int $index = 0): ?string
     {
-        // Check if photos exist and the array is not empty
-        if (! $this->hasPhotos() || ! isset($this->photos[$index])) {
+        if (! isset($this->photos[$index]) || blank($this->photos[$index])) {
             return null;
         }
 
         $photo = $this->photos[$index];
 
-        // Additional check if photo is empty string or null
-        if (empty($photo)) {
-            return null;
-        }
-
-        // If it's already a full URL, return it directly
-        if (str_starts_with($photo, 'http://') || str_starts_with($photo, 'https://')) {
-            return $photo;
-        }
-
-        // Otherwise, use Storage::url() to generate the URL
-        return \Storage::url($photo);
+        return $this->isExternalUrl($photo)
+            ? $photo
+            : Storage::disk('public')->url($photo);
     }
 
     /**
-     * Get the URL for the first photo
+     * Get the URL for the first photo.
      */
     public function getFirstPhotoUrl(): ?string
     {
-        return $this->getPhotoUrl(0);
+        return $this->getPhotoUrl();
     }
 
     /**
-     * Get all photo URLs
+     * Get all photo URLs.
      *
      * @return array<int, string>
      */
@@ -199,37 +176,32 @@ class Item extends Model
             return [];
         }
 
-        $urls = [];
-        foreach ($this->photos as $index => $photo) {
-            $url = $this->getPhotoUrl($index);
-            if ($url !== null) {
-                $urls[] = $url;
-            }
-        }
-
-        return $urls;
+        return array_values(array_filter(
+            array_map(fn ($index) => $this->getPhotoUrl($index), array_keys($this->photos))
+        ));
     }
 
     /**
-     * Get the first photo URL or a placeholder if no photo exists
+     * Get the first photo URL or a placeholder if no photo exists.
      */
     public function getFirstPhotoUrlOrPlaceholder(): string
     {
-        $url = $this->getFirstPhotoUrl();
-
-        if ($url !== null) {
-            return $url;
-        }
-
-        // Return a placeholder image URL
-        return 'https://via.placeholder.com/400x300/1f2937/9ca3af?text=No+Image';
+        return $this->getFirstPhotoUrl() ?? self::PLACEHOLDER_IMAGE_URL;
     }
 
     /**
-     * Check if item has a displayable first photo
+     * Check if item has a displayable first photo.
      */
     public function hasFirstPhoto(): bool
     {
         return $this->getFirstPhotoUrl() !== null;
+    }
+
+    /**
+     * Check if the given photo path is an external URL.
+     */
+    protected function isExternalUrl(string $photo): bool
+    {
+        return str_starts_with($photo, 'https://');
     }
 }

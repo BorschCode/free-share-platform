@@ -27,12 +27,15 @@ test('authenticated users can view items list', function () {
 
 test('items list displays items with correct information', function () {
     $user = User::factory()->create();
+    $category = \App\Models\Category::factory()->create(['name' => 'Electronics']);
+    $city = \App\Models\City::factory()->create(['name' => 'New York']);
+
     $item = Item::factory()->create([
         'user_id' => $user->id,
         'title' => 'Test Item Title',
         'description' => 'Test Item Description',
-        'category' => 'Electronics',
-        'city' => 'New York',
+        'category_id' => $category->id,
+        'city_id' => $city->id,
         'status' => ItemStatus::Available->value,
     ]);
 
@@ -68,42 +71,48 @@ test('items list search functionality works', function () {
 
 test('items list filters by category', function () {
     $user = User::factory()->create();
+    $electronicsCategory = \App\Models\Category::factory()->create(['name' => 'Electronics']);
+    $booksCategory = \App\Models\Category::factory()->create(['name' => 'Books']);
+
     $electronicsItem = Item::factory()->create([
         'user_id' => $user->id,
-        'category' => 'Electronics',
+        'category_id' => $electronicsCategory->id,
         'title' => 'Smartphone',
     ]);
     $booksItem = Item::factory()->create([
         'user_id' => $user->id,
-        'category' => 'Books',
+        'category_id' => $booksCategory->id,
         'title' => 'Novel',
     ]);
 
     $this->actingAs($user);
 
     Volt::test('items.index')
-        ->set('category', 'Electronics')
+        ->set('category', $electronicsCategory->id)
         ->assertSee('Smartphone')
         ->assertDontSee('Novel');
 });
 
 test('items list filters by city', function () {
     $user = User::factory()->create();
+    $nyCity = \App\Models\City::factory()->create(['name' => 'New York']);
+    $laCity = \App\Models\City::factory()->create(['name' => 'Los Angeles']);
+
     $nyItem = Item::factory()->create([
         'user_id' => $user->id,
-        'city' => 'New York',
+        'city_id' => $nyCity->id,
         'title' => 'NY Item',
     ]);
     $laItem = Item::factory()->create([
         'user_id' => $user->id,
-        'city' => 'Los Angeles',
+        'city_id' => $laCity->id,
         'title' => 'LA Item',
     ]);
 
     $this->actingAs($user);
 
     Volt::test('items.index')
-        ->set('city', 'New York')
+        ->set('city', $nyCity->id)
         ->assertSee('NY Item')
         ->assertDontSee('LA Item');
 });

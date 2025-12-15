@@ -30,6 +30,11 @@ new class extends Component {
     #[Validate('required|string|size:6', onUpdate: false)]
     public string $code = '';
 
+    public function layout(): string
+    {
+        return 'components.layouts.bootstrap';
+    }
+
     /**
      * Mount the component.
      */

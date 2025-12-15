@@ -2,8 +2,10 @@
 
 namespace App\Policies;
 
+use App\Models\Item;
 use App\Models\User;
 use App\Models\Vote;
+use Illuminate\Auth\Access\Response;
 
 class VotePolicy
 {
@@ -26,15 +28,19 @@ class VotePolicy
     /**
      * Determine whether a user can create a vote for an item.
      */
-    public function create(User $user, Item $item): bool
+    public function create(User $user, Item $item): Response
     {
         // Cannot vote own item
         if ($item->user_id === $user->id) {
-            return false;
+            return Response::deny('You cannot vote on your own item.');
         }
 
         // Cannot vote twice
-        return ! $item->votes()->where('user_id', $user->id)->exists();
+        if ($item->votes()->where('user_id', $user->id)->exists()) {
+            return Response::deny('You have already voted on this item.');
+        }
+
+        return Response::allow();
     }
 
     /**

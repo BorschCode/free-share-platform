@@ -2,28 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ItemStatus;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Models\Category;
+use App\Models\City;
 use App\Models\Item;
+use App\Models\Tag;
 
 class ItemController extends Controller
 {
-    /**
-     * List all items.
-     */
-    public function index()
-    {
-        $items = Item::latest()->paginate(15);
-
-        return view('items.index', compact('items'));
-    }
-
     /**
      * Show the form for creating a new item.
      */
     public function create()
     {
-        return view('items.create');
+        $categories = Category::whereNull('parent_id')->with('children')->get();
+        $cities = City::orderBy('name')->get();
+        $tags = Tag::all();
+
+        return view('items.create', compact('categories', 'cities', 'tags'));
     }
 
     /**
@@ -45,6 +43,11 @@ class ItemController extends Controller
 
         $item = Item::create($data);
 
+        // Sync tags
+        if ($request->has('tags')) {
+            $item->tags()->sync($request->input('tags'));
+        }
+
         return redirect()
             ->route('items.show', $item)
             ->with('success', 'Item created successfully.');
@@ -65,7 +68,12 @@ class ItemController extends Controller
     {
         $this->authorize('update', $item);
 
-        return view('items.edit', compact('item'));
+        $categories = Category::whereNull('parent_id')->with('children')->get();
+        $cities = City::orderBy('name')->get();
+        $tags = Tag::all();
+        $statuses = ItemStatus::cases();
+
+        return view('items.edit', compact('item', 'categories', 'cities', 'tags', 'statuses'));
     }
 
     /**
@@ -87,6 +95,13 @@ class ItemController extends Controller
         }
 
         $item->update($data);
+
+        // Sync tags
+        if ($request->has('tags')) {
+            $item->tags()->sync($request->input('tags'));
+        } else {
+            $item->tags()->detach();
+        }
 
         return redirect()
             ->route('items.show', $item)

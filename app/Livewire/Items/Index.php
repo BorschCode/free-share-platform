@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Items;
 
+use App\Models\Category;
+use App\Models\City;
 use App\Models\Item;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View as ViewContracts;
 use Illuminate\View\View;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,23 +16,27 @@ class Index extends Component
 {
     use WithPagination;
 
-    public string $search = '';
+    #[Url(except: '')]
+    public mixed $search = '';
 
-    public string $category = '';
+    #[Url(except: '')]
+    public mixed $category = '';
 
-    public string $city = '';
+    #[Url(except: '')]
+    public mixed $city = '';
 
-    public string $status = '';
+    #[Url(except: '')]
+    public mixed $status = '';
 
-    public string $sort = 'newest';
+    #[Url(except: 'newest')]
+    public mixed $sort = 'newest';
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'category' => ['except' => ''],
-        'city' => ['except' => ''],
-        'status' => ['except' => ''],
-        'sort' => ['except' => 'newest'],
-    ];
+    public function mount(): void
+    {
+        if (is_array($this->sort)) {
+            $this->sort = 'newest';
+        }
+    }
 
     public function updatedSearch(): void
     {
@@ -69,15 +76,15 @@ class Index extends Component
     public function render(): Factory|ViewContracts|View
     {
         $query = Item::query()
-            ->with(['user', 'votes', 'comments'])
+            ->with(['user', 'votes', 'comments', 'category', 'city', 'tags'])
             ->when($this->search, function ($q) {
                 $q->where(function ($query) {
                     $query->where('title', 'like', "%{$this->search}%")
                         ->orWhere('description', 'like', "%{$this->search}%");
                 });
             })
-            ->when($this->category, fn ($q) => $q->where('category', $this->category))
-            ->when($this->city, fn ($q) => $q->where('city', $this->city))
+            ->when($this->category, fn ($q) => $q->where('category_id', $this->category))
+            ->when($this->city, fn ($q) => $q->where('city_id', $this->city))
             ->when($this->status, fn ($q) => $q->where('status', (int) $this->status));
 
         if ($this->sort === 'newest') {
@@ -90,8 +97,16 @@ class Index extends Component
 
         return view('livewire.items.index', [
             'items' => $query->paginate(12),
-            'categories' => Item::query()->distinct()->pluck('category')->filter()->sort()->values(),
-            'cities' => Item::query()->distinct()->pluck('city')->filter()->sort()->values(),
+            'categoryOptions' => Category::query()
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get(),
+
+            'cityOptions' => City::query()
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get(),
+
         ])->layout('components.layouts.bootstrap');
     }
 }
