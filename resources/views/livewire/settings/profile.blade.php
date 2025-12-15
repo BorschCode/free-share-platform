@@ -10,6 +10,11 @@ new class extends Component {
     public string $name = '';
     public string $email = '';
 
+    public function layout(): string
+    {
+        return 'components.layouts.bootstrap';
+    }
+
     /**
      * Mount the component.
      */
@@ -69,48 +74,100 @@ new class extends Component {
     }
 }; ?>
 
-<section class="w-full">
-    @include('partials.settings-heading')
+<div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-1">{{ __('Settings') }}</h1>
+            <p class="text-muted mb-0">{{ __('Manage your profile and account settings') }}</p>
+        </div>
+    </div>
+    <hr>
 
-    <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
-        <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
-            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
-
-            <div>
-                <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
-
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
-                    <div>
-                        <flux:text class="mt-4">
-                            {{ __('Your email address is unverified.') }}
-
-                            <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
-                                {{ __('Click here to re-send the verification email.') }}
-                            </flux:link>
-                        </flux:text>
-
-                        @if (session('status') === 'verification-link-sent')
-                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">
-                                {{ __('A new verification link has been sent to your email address.') }}
-                            </flux:text>
-                        @endif
-                    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="nav flex-column nav-pills" role="tablist">
+                <a class="nav-link active" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>
+                <a class="nav-link" href="{{ route('user-password.edit') }}">{{ __('Password') }}</a>
+                @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                    <a class="nav-link" href="{{ route('two-factor.show') }}">{{ __('Two-Factor Auth') }}</a>
                 @endif
+                <a class="nav-link" href="{{ route('appearance.edit') }}">{{ __('Appearance') }}</a>
             </div>
+        </div>
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full" data-test="update-profile-button">
-                        {{ __('Save') }}
-                    </flux:button>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Profile') }}</h5>
+                    <p class="text-muted small mb-0">{{ __('Update your name and email address') }}</p>
                 </div>
+                <div class="card-body">
+                    <form wire:submit="updateProfileInformation">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">{{ __('Name') }}</label>
+                            <input
+                                type="text"
+                                class="form-control @error('name') is-invalid @enderror"
+                                id="name"
+                                wire:model="name"
+                                required
+                                autofocus
+                                autocomplete="name"
+                            >
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                <x-action-message class="me-3" on="profile-updated">
-                    {{ __('Saved.') }}
-                </x-action-message>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">{{ __('Email') }}</label>
+                            <input
+                                type="email"
+                                class="form-control @error('email') is-invalid @enderror"
+                                id="email"
+                                wire:model="email"
+                                required
+                                autocomplete="email"
+                            >
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+
+                            @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
+                                <div class="alert alert-warning mt-2">
+                                    <p class="mb-2">{{ __('Your email address is unverified.') }}</p>
+                                    <button type="button" class="btn btn-sm btn-outline-warning" wire:click.prevent="resendVerificationNotification">
+                                        {{ __('Click here to re-send the verification email.') }}
+                                    </button>
+
+                                    @if (session('status') === 'verification-link-sent')
+                                        <p class="text-success mt-2 mb-0">
+                                            {{ __('A new verification link has been sent to your email address.') }}
+                                        </p>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+                            <span wire:loading wire:target="updateProfileInformation" class="text-muted">{{ __('Saving...') }}</span>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
 
-        <livewire:settings.delete-user-form />
-    </x-settings.layout>
-</section>
+            <div class="card mt-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">{{ __('Delete Account') }}</h5>
+                    <p class="small mb-0">{{ __('Delete your account and all of its resources') }}</p>
+                </div>
+                <div class="card-body">
+                    <livewire:settings.delete-user-form />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@layout('components.layouts.bootstrap')

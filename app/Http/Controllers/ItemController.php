@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ItemStatus;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Category;
@@ -69,7 +70,7 @@ class ItemController extends Controller
         $categories = Category::whereNull('parent_id')->with('children')->get();
         $cities = City::orderBy('name')->get();
         $tags = Tag::all();
-        $statuses = \App\Enums\ItemStatus::cases();
+        $statuses = ItemStatus::cases();
 
         return view('items.edit', compact('item', 'categories', 'cities', 'tags', 'statuses'));
     }

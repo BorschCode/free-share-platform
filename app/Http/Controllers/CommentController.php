@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Item;
-use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, Item $item)
+    public function store(CommentRequest $request, Item $item)
     {
-        $validated = $request->validate([
-            'content' => 'required|string|max:500',
-        ]);
-
         Comment::create([
             'item_id' => $item->id,
             'user_id' => auth()->id(),
-            'content' => $validated['content'],
+            'content' => $request->validated('content'),
         ]);
 
         return back()->with('success', 'Comment added.');

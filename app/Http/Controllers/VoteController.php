@@ -2,30 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VoteRequest;
 use App\Models\Item;
 use App\Models\Vote;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class VoteController extends Controller
 {
-    public function store(Request $request, Item $item)
+    public function store(VoteRequest $request, Item $item)
     {
-        $validated = $request->validate([
-            'vote' => 'required|integer|in:-1,1',
-        ]);
-
-        // Check authorization using policy
-        $response = Gate::inspect('create', [Vote::class, $item]);
-
-        if ($response->denied()) {
-            return back()->with('error', $response->message());
-        }
-
         Vote::create([
             'item_id' => $item->id,
             'user_id' => auth()->id(),
-            'vote' => $validated['vote'],
+            'vote' => $request->validated('vote'),
         ]);
 
         return back()->with('success', 'Vote added.');
