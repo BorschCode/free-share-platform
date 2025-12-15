@@ -188,18 +188,11 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">{{ __('Status') }}</label>
                                 <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                    <option value="{{ App\Enums\ItemStatus::Available->value }}" {{ old('status', $item->status->value) == App\Enums\ItemStatus::Available->value ? 'selected' : '' }}>
-                                        {{ __('Available') }}
-                                    </option>
-                                    <option value="{{ App\Enums\ItemStatus::Gifted->value }}" {{ old('status', $item->status->value) == App\Enums\ItemStatus::Gifted->value ? 'selected' : '' }}>
-                                        {{ __('Gifted') }}
-                                    </option>
-                                    <option value="{{ App\Enums\ItemStatus::Pending->value }}" {{ old('status', $item->status->value) == App\Enums\ItemStatus::Pending->value ? 'selected' : '' }}>
-                                        {{ __('Pending') }}
-                                    </option>
-                                    <option value="{{ App\Enums\ItemStatus::Claimed->value }}" {{ old('status', $item->status->value) == App\Enums\ItemStatus::Claimed->value ? 'selected' : '' }}>
-                                        {{ __('Claimed') }}
-                                    </option>
+                                    @foreach($statuses as $statusOption)
+                                        <option value="{{ $statusOption->value }}" {{ old('status', $item->status->value) == $statusOption->value ? 'selected' : '' }}>
+                                            {{ $statusOption->label() }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>

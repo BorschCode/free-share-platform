@@ -10,18 +10,7 @@ use App\Models\Item;
 use App\Models\Tag;
 
 class ItemController extends Controller
-{
-    /**
-     * List all items.
-     */
-    public function index()
-    {
-        $items = Item::latest()->paginate(15);
-
-        return view('items.index', compact('items'));
-    }
-
-    /**
+{    /**
      * Show the form for creating a new item.
      */
     public function create()
@@ -80,8 +69,9 @@ class ItemController extends Controller
         $categories = Category::whereNull('parent_id')->with('children')->get();
         $cities = City::orderBy('name')->get();
         $tags = Tag::all();
+        $statuses = \App\Enums\ItemStatus::cases();
 
-        return view('items.edit', compact('item', 'categories', 'cities', 'tags'));
+        return view('items.edit', compact('item', 'categories', 'cities', 'tags', 'statuses'));
     }
 
     /**

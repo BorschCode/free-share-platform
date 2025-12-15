@@ -81,12 +81,16 @@
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">{{ $item->category }}</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">{{ $item->city }}</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">{{ $item->status->label() }}</span>
+                                @if($item->category)
+                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">{{ $item->category->name }}</span>
+                                @endif
+                                @if($item->city)
+                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">{{ $item->city->name }}</span>
+                                @endif
+                                @foreach($item->tags as $tag)
+                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: {{ $tag->color ?? '#6b7280' }}">{{ $tag->name }}</span>
+                                @endforeach
+                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">{{ $item->status->label() }}</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">

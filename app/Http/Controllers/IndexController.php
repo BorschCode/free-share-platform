@@ -9,7 +9,7 @@ class IndexController extends Controller
     public function __invoke()
     {
         $items = Item::query()
-            ->with(['user', 'votes', 'comments'])
+            ->with(['user', 'votes', 'comments', 'category', 'city', 'tags'])
             ->available()
             ->latest()
             ->limit(10)

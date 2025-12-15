@@ -16,33 +16,32 @@ use Illuminate\Support\Facades\Storage;
  * @property int $user_id
  * @property string $title
  * @property string $description
- * @property string $category
- * @property string $city
+ * @property int|null $category_id
+ * @property int|null $city_id
  * @property numeric|null $weight
  * @property string|null $dimensions
  * @property array<array-key, mixed>|null $photos
  * @property ItemStatus $status 1: Available, 2: Gifted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Category|null $category
+ * @property-read \App\Models\City|null $city
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vote> $votes
  * @property-read int|null $votes_count
- *
  * @method static Builder<static>|Item available()
  * @method static Builder<static>|Item byStatus(\App\Enums\ItemStatus $status)
- * @method static Builder<static>|Item claimed()
  * @method static \Database\Factories\ItemFactory factory($count = null, $state = [])
  * @method static Builder<static>|Item gifted()
- * @method static Builder<static>|Item moderating()
  * @method static Builder<static>|Item newModelQuery()
  * @method static Builder<static>|Item newQuery()
- * @method static Builder<static>|Item pending()
  * @method static Builder<static>|Item query()
- * @method static Builder<static>|Item refused()
- * @method static Builder<static>|Item whereCategory($value)
- * @method static Builder<static>|Item whereCity($value)
+ * @method static Builder<static>|Item whereCategoryId($value)
+ * @method static Builder<static>|Item whereCityId($value)
  * @method static Builder<static>|Item whereCreatedAt($value)
  * @method static Builder<static>|Item whereDescription($value)
  * @method static Builder<static>|Item whereDimensions($value)
@@ -53,7 +52,6 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder<static>|Item whereUpdatedAt($value)
  * @method static Builder<static>|Item whereUserId($value)
  * @method static Builder<static>|Item whereWeight($value)
- *
  * @mixin \Eloquent
  */
 class Item extends Model

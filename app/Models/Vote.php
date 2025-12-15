@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\User $user
- *
+ * @method static \Database\Factories\VoteFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote query()
@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vote whereVote($value)
- *
  * @mixin \Eloquent
  */
 class Vote extends Model

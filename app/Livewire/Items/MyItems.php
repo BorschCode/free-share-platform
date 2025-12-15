@@ -81,7 +81,7 @@ class MyItems extends Component
     {
         $query = Item::query()
             ->where('user_id', auth()->id())
-            ->with(['votes', 'comments'])
+            ->with(['votes', 'comments', 'category', 'city', 'tags'])
             ->when($this->search, function ($q) {
                 $q->where(function ($query) {
                     $query->where('title', 'like', "%{$this->search}%")

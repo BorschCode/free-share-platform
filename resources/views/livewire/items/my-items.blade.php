@@ -82,8 +82,15 @@
                         </p>
 
                         <div class="d-flex flex-wrap gap-2 mb-3">
-                            <span class="badge bg-info">{{ $item->category }}</span>
-                            <span class="badge bg-secondary">{{ $item->city }}</span>
+                            @if($item->category)
+                                <span class="badge bg-info">{{ $item->category->name }}</span>
+                            @endif
+                            @if($item->city)
+                                <span class="badge bg-secondary">{{ $item->city->name }}</span>
+                            @endif
+                            @foreach($item->tags as $tag)
+                                <span class="badge" style="background-color: {{ $tag->color ?? '#6c757d' }}">{{ $tag->name }}</span>
+                            @endforeach
                         </div>
 
                         <!-- Status Management -->
