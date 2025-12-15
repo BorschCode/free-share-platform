@@ -31,13 +31,6 @@ class Index extends Component
     #[Url(except: 'newest')]
     public mixed $sort = 'newest';
 
-    public function mount(): void
-    {
-        if (is_array($this->sort)) {
-            $this->sort = 'newest';
-        }
-    }
-
     public function updatedSearch(): void
     {
         $this->resetPage();

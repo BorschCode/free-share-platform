@@ -12,16 +12,19 @@
                             <div class="carousel-inner">
                                 @foreach($item->getAllPhotoUrls() as $index => $photoUrl)
                                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <img src="{{ $photoUrl }}" class="d-block w-100" alt="{{ $item->title }}" style="max-height: 500px; object-fit: contain; background-color: #f8f9fa;">
+                                        <img src="{{ $photoUrl }}" class="d-block w-100" alt="{{ $item->title }}"
+                                             style="max-height: 500px; object-fit: contain; background-color: #f8f9fa;">
                                     </div>
                                 @endforeach
                             </div>
                             @if(count($item->getAllPhotoUrls()) > 1)
-                                <button class="carousel-control-prev" type="button" data-bs-target="#itemPhotos" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#itemPhotos"
+                                        data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">{{ __('Previous') }}</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#itemPhotos" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#itemPhotos"
+                                        data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">{{ __('Next') }}</span>
                                 </button>
@@ -30,7 +33,9 @@
                     </div>
                 @else
                     <div class="card mb-4">
-                        <img src="{{ $item->getFirstPhotoUrlOrPlaceholder() }}" class="card-img-top" alt="{{ $item->title }}" style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;">
+                        <img src="{{ $item->getFirstPhotoUrlOrPlaceholder() }}" class="card-img-top"
+                             alt="{{ $item->title }}"
+                             style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;">
                     </div>
                 @endif
 
@@ -38,8 +43,9 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">{{ $item->title }}</h5>
-                        <span class="badge {{ $item->status === App\Enums\ItemStatus::Available ? 'bg-success' : 'bg-warning' }}">
-                            {{ $item->status->label() }}
+
+                        <span class="badge {{ $item->status->badgeClass() }}">
+                        {{ $item->status->label() }}
                         </span>
                     </div>
                     <div class="card-body">
@@ -80,7 +86,8 @@
                                     <h6>{{ __('Tags') }}</h6>
                                     <div class="d-flex flex-wrap gap-2">
                                         @foreach($item->tags as $tag)
-                                            <span class="badge" style="background-color: {{ $tag->color }}; color: #fff;">
+                                            <span class="badge"
+                                                  style="background-color: {{ $tag->color }}; color: #fff;">
                                                 {{ $tag->name }}
                                             </span>
                                         @endforeach
@@ -109,7 +116,7 @@
                                     required
                                 >{{ old('content') }}</textarea>
                                 @error('content')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm">
@@ -123,13 +130,16 @@
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <div>
                                         <strong>{{ $comment->user->name }}</strong>
-                                        <small class="text-muted ms-2">{{ $comment->created_at->diffForHumans() }}</small>
+                                        <small
+                                            class="text-muted ms-2">{{ $comment->created_at->diffForHumans() }}</small>
                                     </div>
                                     @can('delete', $comment)
-                                        <form action="{{ route('items.comments.destroy', [$item, $comment]) }}" method="POST">
+                                        <form action="{{ route('items.comments.destroy', [$item, $comment]) }}"
+                                              method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('{{ __('Are you sure you want to delete this comment?') }}')">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    onclick="return confirm('{{ __('Are you sure you want to delete this comment?') }}')">
                                                 {{ __('Delete') }}
                                             </button>
                                         </form>
@@ -158,32 +168,42 @@
 
                         <div class="d-flex justify-content-center gap-3 mb-3">
                             <!-- Upvote -->
-                            <form action="{{ $userVote ? route('items.vote.remove', $item) : route('items.vote', $item) }}" method="POST">
+                            <form
+                                action="{{ $userVote ? route('items.vote.remove', $item) : route('items.vote', $item) }}"
+                                method="POST">
                                 @csrf
                                 @if($userVote)
                                     @method('DELETE')
                                 @else
                                     <input type="hidden" name="vote" value="1">
                                 @endif
-                                <button type="submit" class="btn {{ $userVote && $userVote->vote === 1 ? 'btn-success' : 'btn-outline-success' }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+                                <button type="submit"
+                                        class="btn {{ $userVote && $userVote->vote === 1 ? 'btn-success' : 'btn-outline-success' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-arrow-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
                                     </svg>
                                     {{ $upvotes }}
                                 </button>
                             </form>
 
                             <!-- Downvote -->
-                            <form action="{{ $userVote ? route('items.vote.remove', $item) : route('items.vote', $item) }}" method="POST">
+                            <form
+                                action="{{ $userVote ? route('items.vote.remove', $item) : route('items.vote', $item) }}"
+                                method="POST">
                                 @csrf
                                 @if($userVote)
                                     @method('DELETE')
                                 @else
                                     <input type="hidden" name="vote" value="-1">
                                 @endif
-                                <button type="submit" class="btn {{ $userVote && $userVote->vote === -1 ? 'btn-danger' : 'btn-outline-danger' }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                                <button type="submit"
+                                        class="btn {{ $userVote && $userVote->vote === -1 ? 'btn-danger' : 'btn-outline-danger' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
                                     </svg>
                                     {{ $downvotes }}
                                 </button>
@@ -225,7 +245,8 @@
                                     <form action="{{ route('items.destroy', $item) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger w-100" onclick="return confirm('{{ __('Are you sure you want to delete this item?') }}')">
+                                        <button type="submit" class="btn btn-danger w-100"
+                                                onclick="return confirm('{{ __('Are you sure you want to delete this item?') }}')">
                                             {{ __('Delete Item') }}
                                         </button>
                                     </form>
