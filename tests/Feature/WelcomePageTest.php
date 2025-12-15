@@ -98,14 +98,16 @@ test('welcome page shows view details button for authenticated users', function 
 
 test('welcome page displays item information correctly', function () {
     $user = User::factory()->create();
+    $category = \App\Models\Category::factory()->create(['name' => 'Electronics']);
+    $city = \App\Models\City::factory()->create(['name' => 'New York']);
 
     $item = Item::factory()->create([
         'user_id' => $user->id,
         'status' => ItemStatus::Available->value,
         'title' => 'Test Item Title',
         'description' => 'Test Item Description',
-        'category' => 'Electronics',
-        'city' => 'New York',
+        'category_id' => $category->id,
+        'city_id' => $city->id,
     ]);
 
     $response = $this->get('/');
