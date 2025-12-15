@@ -117,8 +117,8 @@ test('getFirstPhotoUrlOrPlaceholder returns placeholder when no photos', functio
     ]);
 
     $url = $item->getFirstPhotoUrlOrPlaceholder();
-    expect($url)->toContain('placeholder')
-        ->and($url)->toContain('No+Image');
+    expect($url)->toContain('placehold')
+        ->and($url)->toContain('600x400');
 });
 
 test('hasFirstPhoto returns true when first photo exists', function () {

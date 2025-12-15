@@ -60,7 +60,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    public const PLACEHOLDER_IMAGE_URL = 'https://via.placeholder.com/400x300/1f2937/9ca3af?text=No+Image';
+    public const PLACEHOLDER_IMAGE_URL = 'https://placehold.co/600x400/png';
 
     protected $fillable = [
         'title',
