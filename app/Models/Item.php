@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Storage;
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vote> $votes
  * @property-read int|null $votes_count
+ *
  * @method static Builder<static>|Item available()
  * @method static Builder<static>|Item byStatus(\App\Enums\ItemStatus $status)
  * @method static \Database\Factories\ItemFactory factory($count = null, $state = [])
@@ -52,6 +53,7 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder<static>|Item whereUpdatedAt($value)
  * @method static Builder<static>|Item whereUserId($value)
  * @method static Builder<static>|Item whereWeight($value)
+ *
  * @mixin \Eloquent
  */
 class Item extends Model

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Comment;
 use App\Models\Item;
-use App\Models\Tag;
 use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Seeder;
