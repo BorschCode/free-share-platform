@@ -6,14 +6,14 @@
 
 <title>Freecycle Listings Platform</title>
 
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=nunito:400,500,600,700" rel="stylesheet" />
 
-<link rel="preload" as="style" href="build/assets/app-C3GeRjPD.css" /><link rel="modulepreload" as="script" href="build/assets/app-D09XTl2l.js" /><link rel="stylesheet" href="build/assets/app-C3GeRjPD.css" data-navigate-track="reload" /><script type="module" src="build/assets/app-D09XTl2l.js" data-navigate-track="reload"></script><script id="browser-logger-active">
+<link rel="preload" as="style" href="../build/assets/app-C3GeRjPD.css" /><link rel="modulepreload" as="script" href="../build/assets/app-D09XTl2l.js" /><link rel="stylesheet" href="../build/assets/app-C3GeRjPD.css" data-navigate-track="reload" /><script type="module" src="../build/assets/app-D09XTl2l.js" data-navigate-track="reload"></script><script id="browser-logger-active">
 (function() {
     const ENDPOINT = 'http://localhost:8038/_boost/browser-logs';
     const logQueue = [];
@@ -206,7 +206,7 @@
         <div class="row min-vh-100 justify-content-center align-items-center">
             <div class="col-md-5 col-lg-4">
                 <div class="text-center mb-4">
-                    <a href="index.html" class="text-decoration-none">
+                    <a href="../index.html" class="text-decoration-none">
                         <h3 class="text-primary mb-0">Freecycle Listings Platform</h3>
                     </a>
                 </div>
@@ -215,30 +215,14 @@
                     <div class="card-body p-4">
                         <div>
         <div class="text-center mb-4">
-    <h2 class="mb-2">Create an account</h2>
-    <p class="text-muted">Enter your details below to create your account</p>
+    <h2 class="mb-2">Log in to your account</h2>
+    <p class="text-muted">Enter your email and password below to log in</p>
 </div>
 
         <!-- Session Status -->
         
-        <form method="POST" action="register.html">
+        <form method="POST" action="8.html">
             <input type="hidden" name="_token" value="qqTHVdkb2GSWetMuYwGbu5mttbQmvlTHFlSti9Wd" autocomplete="off">
-            <!-- Name -->
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input
-                    type="text"
-                    class="form-control "
-                    id="name"
-                    name="name"
-                    value=""
-                    required
-                    autofocus
-                    autocomplete="name"
-                    placeholder="Full name"
-                >
-                            </div>
-
             <!-- Email Address -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
@@ -249,6 +233,7 @@
                     name="email"
                     value=""
                     required
+                    autofocus
                     autocomplete="email"
                     placeholder="email@example.com"
                 >
@@ -256,50 +241,55 @@
 
             <!-- Password -->
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="password" class="form-label mb-0">Password</label>
+                                            <a href="../forgot-password.html" class="text-decoration-none small" wire:navigate>
+                            Forgot your password?
+                        </a>
+                                    </div>
                 <input
                     type="password"
                     class="form-control "
                     id="password"
                     name="password"
                     required
-                    autocomplete="new-password"
+                    autocomplete="current-password"
                     placeholder="Password"
                 >
                             </div>
 
-            <!-- Confirm Password -->
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirm password</label>
+            <!-- Remember Me -->
+            <div class="mb-3 form-check">
                 <input
-                    type="password"
-                    class="form-control "
-                    id="password_confirmation"
-                    name="password_confirmation"
-                    required
-                    autocomplete="new-password"
-                    placeholder="Confirm password"
+                    type="checkbox"
+                    class="form-check-input"
+                    id="remember"
+                    name="remember"
+                    
                 >
-                            </div>
+                <label class="form-check-label" for="remember">
+                    Remember me
+                </label>
+            </div>
 
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary" data-test="register-user-button">
-                    Create account
+                <button type="submit" class="btn btn-primary" data-test="login-button">
+                    Log in
                 </button>
             </div>
         </form>
 
-        <div class="text-center mt-3 text-muted">
-            <span>Already have an account?</span>
-            <a href="items/8.html" class="text-decoration-none" wire:navigate>Log in</a>
-        </div>
-    </div>
+                    <div class="text-center mt-3 text-muted">
+                <span>Don&#039;t have an account?</span>
+                <a href="../register.html" class="text-decoration-none" wire:navigate>Sign up</a>
+            </div>
+            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="livewire-c8618077/livewire.min.js@id=0e4d4a69"   data-csrf="qqTHVdkb2GSWetMuYwGbu5mttbQmvlTHFlSti9Wd" data-uri-prefix="/livewire-c8618077" data-update-uri="/livewire-c8618077/update" data-navigate-once="true"></script>
+    <script src="../livewire-c8618077/livewire.min.js@id=0e4d4a69"   data-csrf="qqTHVdkb2GSWetMuYwGbu5mttbQmvlTHFlSti9Wd" data-uri-prefix="/livewire-c8618077" data-update-uri="/livewire-c8618077/update" data-navigate-once="true"></script>
 </body>
 </html>

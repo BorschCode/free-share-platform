@@ -220,8 +220,6 @@
     });
 })();
 </script>
-<link rel='stylesheet' type='text/css' property='stylesheet' href='_debugbar/assets/stylesheets@v=1763541085.css' data-turbolinks-eval='false' data-turbo-eval='false'><script src='_debugbar/assets/javascript@v=1763541085' data-turbolinks-eval='false' data-turbo-eval='false'></script><script data-turbo-eval='false'>jQuery.noConflict(true);</script>
-<script> Sfdump = window.Sfdump || (function (doc) { doc.documentElement.classList.add('sf-js-enabled'); var rxEsc = /([.*+?^${}()|\[\]\/\\])/g, idRx = /\bsf-dump-\d+-ref[012]\w+\b/, keyHint = 0 <= navigator.platform.toUpperCase().indexOf('MAC') ? 'Cmd' : 'Ctrl', addEventListener = function (e, n, cb) { e.addEventListener(n, cb, false); }; if (!doc.addEventListener) { addEventListener = function (element, eventName, callback) { element.attachEvent('on' + eventName, function (e) { e.preventDefault = function () {e.returnValue = false;}; e.target = e.srcElement; callback(e); }); }; } function toggle(a, recursive) { var s = a.nextSibling || {}, oldClass = s.className, arrow, newClass; if (/\bsf-dump-compact\b/.test(oldClass)) { arrow = '▼'; newClass = 'sf-dump-expanded'; } else if (/\bsf-dump-expanded\b/.test(oldClass)) { arrow = '▶'; newClass = 'sf-dump-compact'; } else { return false; } if (doc.createEvent && s.dispatchEvent) { var event = doc.createEvent('Event'); event.initEvent('sf-dump-expanded' === newClass ? 'sfbeforedumpexpand' : 'sfbeforedumpcollapse', true, false); s.dispatchEvent(event); } a.lastChild.innerHTML = arrow; s.className = s.className.replace(/\bsf-dump-(compact|expanded)\b/, newClass); if (recursive) { try { a = s.querySelectorAll('.'+oldClass); for (s = 0; s < a.length; ++s) { if (-1 == a[s].className.indexOf(newClass)) { a[s].className = newClass; a[s].previousSibling.lastChild.innerHTML = arrow; } } } catch (e) { } } return true; }; function collapse(a, recursive) { var s = a.nextSibling || {}, oldClass = s.className; if (/\bsf-dump-expanded\b/.test(oldClass)) { toggle(a, recursive); return true; } return false; }; function expand(a, recursive) { var s = a.nextSibling || {}, oldClass = s.className; if (/\bsf-dump-compact\b/.test(oldClass)) { toggle(a, recursive); return true; } return false; }; function collapseAll(root) { var a = root.querySelector('a.sf-dump-toggle'); if (a) { collapse(a, true); expand(a); return true; } return false; } function reveal(node) { var previous, parents = []; while ((node = node.parentNode || {}) && (previous = node.previousSibling) && 'A' === previous.tagName) { parents.push(previous); } if (0 !== parents.length) { parents.forEach(function (parent) { expand(parent); }); return true; } return false; } function highlight(root, activeNode, nodes) { resetHighlightedNodes(root); Array.from(nodes||[]).forEach(function (node) { if (!/\bsf-dump-highlight\b/.test(node.className)) { node.className = node.className + ' sf-dump-highlight'; } }); if (!/\bsf-dump-highlight-active\b/.test(activeNode.className)) { activeNode.className = activeNode.className + ' sf-dump-highlight-active'; } } function resetHighlightedNodes(root) { Array.from(root.querySelectorAll('.sf-dump-str, .sf-dump-key, .sf-dump-public, .sf-dump-protected, .sf-dump-private')).forEach(function (strNode) { strNode.className = strNode.className.replace(/\bsf-dump-highlight\b/, ''); strNode.className = strNode.className.replace(/\bsf-dump-highlight-active\b/, ''); }); } return function (root, x) { root = doc.getElementById(root); var indentRx = new RegExp('^('+(root.getAttribute('data-indent-pad') || ' ').replace(rxEsc, '\\$1')+')+', 'm'), options = {"maxDepth":1,"maxStringLength":160,"fileLinkFormat":false}, elt = root.getElementsByTagName('A'), len = elt.length, i = 0, s, h, t = []; while (i < len) t.push(elt[i++]); for (i in x) { options[i] = x[i]; } function a(e, f) { addEventListener(root, e, function (e, n) { if ('A' == e.target.tagName) { f(e.target, e); } else if ('A' == e.target.parentNode.tagName) { f(e.target.parentNode, e); } else { n = /\bsf-dump-ellipsis\b/.test(e.target.className) ? e.target.parentNode : e.target; if ((n = n.nextElementSibling) && 'A' == n.tagName) { if (!/\bsf-dump-toggle\b/.test(n.className)) { n = n.nextElementSibling || n; } f(n, e, true); } } }); }; function isCtrlKey(e) { return e.ctrlKey || e.metaKey; } function xpathString(str) { var parts = str.match(/[^'"]+|['"]/g).map(function (part) { if ("'" == part) { return '"\'"'; } if ('"' == part) { return "'\"'"; } return "'" + part + "'"; }); return "concat(" + parts.join(",") + ", '')"; } function xpathHasClass(className) { return "contains(concat(' ', normalize-space(@class), ' '), ' " + className +" ')"; } a('mouseover', function (a, e, c) { if (c) { e.target.style.cursor = "pointer"; } }); a('click', function (a, e, c) { if (/\bsf-dump-toggle\b/.test(a.className)) { e.preventDefault(); if (!toggle(a, isCtrlKey(e))) { var r = doc.getElementById(a.getAttribute('href').slice(1)), s = r.previousSibling, f = r.parentNode, t = a.parentNode; t.replaceChild(r, a); f.replaceChild(a, s); t.insertBefore(s, r); f = f.firstChild.nodeValue.match(indentRx); t = t.firstChild.nodeValue.match(indentRx); if (f && t && f[0] !== t[0]) { r.innerHTML = r.innerHTML.replace(new RegExp('^'+f[0].replace(rxEsc, '\\$1'), 'mg'), t[0]); } if (/\bsf-dump-compact\b/.test(r.className)) { toggle(s, isCtrlKey(e)); } } if (c) { } else if (doc.getSelection) { try { doc.getSelection().removeAllRanges(); } catch (e) { doc.getSelection().empty(); } } else { doc.selection.empty(); } } else if (/\bsf-dump-str-toggle\b/.test(a.className)) { e.preventDefault(); e = a.parentNode.parentNode; e.className = e.className.replace(/\bsf-dump-str-(expand|collapse)\b/, a.parentNode.className); } }); elt = root.getElementsByTagName('SAMP'); len = elt.length; i = 0; while (i < len) t.push(elt[i++]); len = t.length; for (i = 0; i < len; ++i) { elt = t[i]; if ('SAMP' == elt.tagName) { a = elt.previousSibling || {}; if ('A' != a.tagName) { a = doc.createElement('A'); a.className = 'sf-dump-ref'; elt.parentNode.insertBefore(a, elt); } else { a.innerHTML += ' '; } a.title = (a.title ? a.title+'\n[' : '[')+keyHint+'+click] Expand all children'; a.innerHTML += elt.className == 'sf-dump-compact' ? '<span>▶</span>' : '<span>▼</span>'; a.className += ' sf-dump-toggle'; x = 1; if ('sf-dump' != elt.parentNode.className) { x += elt.parentNode.getAttribute('data-depth')/1; } } else if (/\bsf-dump-ref\b/.test(elt.className) && (a = elt.getAttribute('href'))) { a = a.slice(1); elt.className += ' sf-dump-hover'; elt.className += ' '+a; if (/[\[{]$/.test(elt.previousSibling.nodeValue)) { a = a != elt.nextSibling.id && doc.getElementById(a); try { s = a.nextSibling; elt.appendChild(a); s.parentNode.insertBefore(a, s); if (/^[@#]/.test(elt.innerHTML)) { elt.innerHTML += ' <span>▶</span>'; } else { elt.innerHTML = '<span>▶</span>'; elt.className = 'sf-dump-ref'; } elt.className += ' sf-dump-toggle'; } catch (e) { if ('&' == elt.innerHTML.charAt(0)) { elt.innerHTML = '…'; elt.className = 'sf-dump-ref'; } } } } } if (doc.evaluate && Array.from && root.children.length > 1) { root.setAttribute('tabindex', 0); SearchState = function () { this.nodes = []; this.idx = 0; }; SearchState.prototype = { next: function () { if (this.isEmpty()) { return this.current(); } this.idx = this.idx < (this.nodes.length - 1) ? this.idx + 1 : 0; return this.current(); }, previous: function () { if (this.isEmpty()) { return this.current(); } this.idx = this.idx > 0 ? this.idx - 1 : (this.nodes.length - 1); return this.current(); }, isEmpty: function () { return 0 === this.count(); }, current: function () { if (this.isEmpty()) { return null; } return this.nodes[this.idx]; }, reset: function () { this.nodes = []; this.idx = 0; }, count: function () { return this.nodes.length; }, }; function showCurrent(state) { var currentNode = state.current(), currentRect, searchRect; if (currentNode) { reveal(currentNode); highlight(root, currentNode, state.nodes); if ('scrollIntoView' in currentNode) { currentNode.scrollIntoView(true); currentRect = currentNode.getBoundingClientRect(); searchRect = search.getBoundingClientRect(); if (currentRect.top < (searchRect.top + searchRect.height)) { window.scrollBy(0, -(searchRect.top + searchRect.height + 5)); } } } counter.textContent = (state.isEmpty() ? 0 : state.idx + 1) + ' of ' + state.count(); } var search = doc.createElement('div'); search.className = 'sf-dump-search-wrapper sf-dump-search-hidden'; search.innerHTML = ' <input type="text" class="sf-dump-search-input"> <span class="sf-dump-search-count">0 of 0<\/span> <button type="button" class="sf-dump-search-input-previous" tabindex="-1"> <svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1683 1331l-166 165q-19 19-45 19t-45-19L896 965l-531 531q-19 19-45 19t-45-19l-166-165q-19-19-19-45.5t19-45.5l742-741q19-19 45-19t45 19l742 741q19 19 19 45.5t-19 45.5z"\/><\/svg> <\/button> <button type="button" class="sf-dump-search-input-next" tabindex="-1"> <svg viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1683 808l-742 741q-19 19-45 19t-45-19L109 808q-19-19-19-45.5t19-45.5l166-165q19-19 45-19t45 19l531 531 531-531q19-19 45-19t45 19l166 165q19 19 19 45.5t-19 45.5z"\/><\/svg> <\/button> '; root.insertBefore(search, root.firstChild); var state = new SearchState(); var searchInput = search.querySelector('.sf-dump-search-input'); var counter = search.querySelector('.sf-dump-search-count'); var searchInputTimer = 0; var previousSearchQuery = ''; addEventListener(searchInput, 'keyup', function (e) { var searchQuery = e.target.value; /* Don't perform anything if the pressed key didn't change the query */ if (searchQuery === previousSearchQuery) { return; } previousSearchQuery = searchQuery; clearTimeout(searchInputTimer); searchInputTimer = setTimeout(function () { state.reset(); collapseAll(root); resetHighlightedNodes(root); if ('' === searchQuery) { counter.textContent = '0 of 0'; return; } var classMatches = [ "sf-dump-str", "sf-dump-key", "sf-dump-public", "sf-dump-protected", "sf-dump-private", ].map(xpathHasClass).join(' or '); var xpathResult = doc.evaluate('.//span[' + classMatches + '][contains(translate(child::text(), ' + xpathString(searchQuery.toUpperCase()) + ', ' + xpathString(searchQuery.toLowerCase()) + '), ' + xpathString(searchQuery.toLowerCase()) + ')]', root, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null); while (node = xpathResult.iterateNext()) state.nodes.push(node); showCurrent(state); }, 400); }); Array.from(search.querySelectorAll('.sf-dump-search-input-next, .sf-dump-search-input-previous')).forEach(function (btn) { addEventListener(btn, 'click', function (e) { e.preventDefault(); -1 !== e.target.className.indexOf('next') ? state.next() : state.previous(); searchInput.focus(); collapseAll(root); showCurrent(state); }) }); addEventListener(root, 'keydown', function (e) { var isSearchActive = !/\bsf-dump-search-hidden\b/.test(search.className); if ((114 === e.keyCode && !isSearchActive) || (isCtrlKey(e) && 70 === e.keyCode)) { /* F3 or CMD/CTRL + F */ if (70 === e.keyCode && document.activeElement === searchInput) { /* * If CMD/CTRL + F is hit while having focus on search input, * the user probably meant to trigger browser search instead. * Let the browser execute its behavior: */ return; } e.preventDefault(); search.className = search.className.replace(/\bsf-dump-search-hidden\b/, ''); searchInput.focus(); } else if (isSearchActive) { if (27 === e.keyCode) { /* ESC key */ search.className += ' sf-dump-search-hidden'; e.preventDefault(); resetHighlightedNodes(root); searchInput.value = ''; } else if ( (isCtrlKey(e) && 71 === e.keyCode) /* CMD/CTRL + G */ || 13 === e.keyCode /* Enter */ || 114 === e.keyCode /* F3 */ ) { e.preventDefault(); e.shiftKey ? state.previous() : state.next(); collapseAll(root); showCurrent(state); } } }); } if (0 >= options.maxStringLength) { return; } try { elt = root.querySelectorAll('.sf-dump-str'); len = elt.length; i = 0; t = []; while (i < len) t.push(elt[i++]); len = t.length; for (i = 0; i < len; ++i) { elt = t[i]; s = elt.innerText || elt.textContent; x = s.length - options.maxStringLength; if (0 < x) { h = elt.innerHTML; elt[elt.innerText ? 'innerText' : 'textContent'] = s.substring(0, options.maxStringLength); elt.className += ' sf-dump-str-collapse'; elt.innerHTML = '<span class=sf-dump-str-collapse>'+h+'<a class="sf-dump-ref sf-dump-str-toggle" title="Collapse"> ◀</a></span>'+ '<span class=sf-dump-str-expand>'+elt.innerHTML+'<a class="sf-dump-ref sf-dump-str-toggle" title="'+x+' remaining characters"> ▶</a></span>'; } } } catch (e) { } }; })(document); </script><style> .sf-js-enabled .phpdebugbar pre.sf-dump .sf-dump-compact, .sf-js-enabled .sf-dump-str-collapse .sf-dump-str-collapse, .sf-js-enabled .sf-dump-str-expand .sf-dump-str-expand { display: none; } .sf-dump-hover:hover { background-color: #B729D9; color: #FFF !important; border-radius: 2px; } .phpdebugbar pre.sf-dump { display: block; white-space: pre; padding: 5px; overflow: initial !important; } .phpdebugbar pre.sf-dump:after { content: ""; visibility: hidden; display: block; height: 0; clear: both; } .phpdebugbar pre.sf-dump .sf-dump-ellipsization { display: inline-flex; } .phpdebugbar pre.sf-dump a { text-decoration: none; cursor: pointer; border: 0; outline: none; color: inherit; } .phpdebugbar pre.sf-dump img { max-width: 50em; max-height: 50em; margin: .5em 0 0 0; padding: 0; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAHUlEQVQY02O8zAABilCaiQEN0EeA8QuUcX9g3QEAAjcC5piyhyEAAAAASUVORK5CYII=) #D3D3D3; } .phpdebugbar pre.sf-dump .sf-dump-ellipsis { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; } .phpdebugbar pre.sf-dump .sf-dump-ellipsis-tail { flex-shrink: 0; } .phpdebugbar pre.sf-dump code { display:inline; padding:0; background:none; } .sf-dump-public.sf-dump-highlight, .sf-dump-protected.sf-dump-highlight, .sf-dump-private.sf-dump-highlight, .sf-dump-str.sf-dump-highlight, .sf-dump-key.sf-dump-highlight { background: rgba(111, 172, 204, 0.3); border: 1px solid #7DA0B1; border-radius: 3px; } .sf-dump-public.sf-dump-highlight-active, .sf-dump-protected.sf-dump-highlight-active, .sf-dump-private.sf-dump-highlight-active, .sf-dump-str.sf-dump-highlight-active, .sf-dump-key.sf-dump-highlight-active { background: rgba(253, 175, 0, 0.4); border: 1px solid #ffa500; border-radius: 3px; } .phpdebugbar pre.sf-dump .sf-dump-search-hidden { display: none !important; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper { font-size: 0; white-space: nowrap; margin-bottom: 5px; display: flex; position: -webkit-sticky; position: sticky; top: 5px; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > * { vertical-align: top; box-sizing: border-box; height: 21px; font-weight: normal; border-radius: 0; background: #FFF; color: #757575; border: 1px solid #BBB; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > input.sf-dump-search-input { padding: 3px; height: 21px; font-size: 12px; border-right: none; border-top-left-radius: 3px; border-bottom-left-radius: 3px; color: #000; min-width: 15px; width: 100%; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-next, .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-previous { background: #F2F2F2; outline: none; border-left: none; font-size: 0; line-height: 0; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-next { border-top-right-radius: 3px; border-bottom-right-radius: 3px; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-next > svg, .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-previous > svg { pointer-events: none; width: 12px; height: 12px; } .phpdebugbar pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-count { display: inline-block; padding: 0 5px; margin: 0; border-left: none; line-height: 21px; font-size: 12px; }.phpdebugbar pre.sf-dump, .phpdebugbar pre.sf-dump .sf-dump-default{word-wrap: break-word; white-space: pre-wrap; word-break: normal}.phpdebugbar pre.sf-dump .sf-dump-num{font-weight:bold; color:#1299DA}.phpdebugbar pre.sf-dump .sf-dump-const{font-weight:bold}.phpdebugbar pre.sf-dump .sf-dump-str{font-weight:bold; color:#3A9B26}.phpdebugbar pre.sf-dump .sf-dump-note{color:#1299DA}.phpdebugbar pre.sf-dump .sf-dump-ref{color:#7B7B7B}.phpdebugbar pre.sf-dump .sf-dump-public{color:#000000}.phpdebugbar pre.sf-dump .sf-dump-protected{color:#000000}.phpdebugbar pre.sf-dump .sf-dump-private{color:#000000}.phpdebugbar pre.sf-dump .sf-dump-meta{color:#B729D9}.phpdebugbar pre.sf-dump .sf-dump-key{color:#3A9B26}.phpdebugbar pre.sf-dump .sf-dump-index{color:#1299DA}.phpdebugbar pre.sf-dump .sf-dump-ellipsis{color:#A0A000}.phpdebugbar pre.sf-dump .sf-dump-virtual{font-style:italic}.phpdebugbar pre.sf-dump .sf-dump-ns{user-select:none;}.phpdebugbar pre.sf-dump .sf-dump-ellipsis-note{color:#1299DA}.phpdebugbar[data-theme='dark'] pre.sf-dump, pre.sf-dump .sf-dump-default{background-color:#18171B; color:#FF8400; line-height:1.2em; font:12px Menlo, Monaco, Consolas, monospace; word-wrap: break-word; white-space: pre-wrap; position:relative; z-index:99999; word-break: break-all}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-num{font-weight:bold; color:#1299DA}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-const{font-weight:bold}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-virtual{font-style:italic}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-str{font-weight:bold; color:#56DB3A}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-note{color:#1299DA}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-ref{color:#A0A0A0}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-public{color:#FFFFFF}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-protected{color:#FFFFFF}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-private{color:#FFFFFF}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-meta{color:#B729D9}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-key{color:#56DB3A}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-index{color:#1299DA}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-ellipsis{color:#FF8400}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-ns{user-select:none;}.phpdebugbar[data-theme='dark'] pre.sf-dump .sf-dump-ellipsis-note{color:#1299DA}</style>
 </head>
 
 <body class="min-h-screen p-6 md:p-12">
@@ -256,28 +254,28 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="http://localhost:8038/storage/items/zsxqpGXTOmpNdXbyCDn1g2TByJOTMyeWtnmQb6Un.jpg"
-                            alt="Et ducimus quisquam voluptas aute nisi deleniti alias eum at"
+                            src="storage/items/jOlIKj80OeZRsImGHsiofxufpOXkJRktlEC2jwTT.png"
+                            alt="Ut voluptatem Voluptatem iusto magnam quasi ab quod aspernatur voluptatibus esse et"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">Et ducimus quisquam voluptas aute nisi deleniti alias eum at</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Ut voluptatem Voluptatem iusto magnam quasi ab quod aspernatur voluptatibus esse et</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Aut voluptas similiq
+                                In exercitationem el
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Autem a quo nihil ut cupidatat ut ea rem sint nihil</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Aut qui veritatis molestiae sed ad nisi ut irure deserunt velit est minus anim temporibus</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Outdoor Furniture</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Philadelphia</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #10b981">Free</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #f59e0b">Vintage</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #6366f1">Collectible</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Rhiannon Cleveland</span>
+                                <span>By Test User</span>
                                 <div class="flex gap-3">
                                     <span>👍 0</span>
                                     <span>💬 0</span>
@@ -285,7 +283,7 @@
                             </div>
 
                             <a
-                                href="items/101.html"
+                                href="items/24.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -295,36 +293,38 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/196/600/300"
-                            alt="modi distinctio aut"
+                            src="storage/items/wFYTttyFuN78A8YCUq5AyP98AX2lvDRCg6rHMxMF.png"
+                            alt="Sapiente et exercitationem dolore aut odio eum aut id"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">modi distinctio aut</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Sapiente et exercitationem dolore aut odio eum aut id</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Dolore officiis tenetur quo tempore inventore aut enim voluptate. Hic enim dolorem quis autem. Lauda...
+                                Distinctio Enim min
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Electronics</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Lake Thelmashire</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Craft Materials</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Boston</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #ef4444">Urgent</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #8b5cf6">Like New</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #ec4899">Handmade</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #6366f1">Collectible</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #7c3aed">Bundle</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
                                 <span>By Test User</span>
                                 <div class="flex gap-3">
-                                    <span>👍 3</span>
-                                    <span>💬 3</span>
+                                    <span>👍 0</span>
+                                    <span>💬 0</span>
                                 </div>
                             </div>
 
                             <a
-                                href="items/82.html"
+                                href="items/23.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -334,36 +334,35 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/260/400/450"
-                            alt="dolores labore explicabo"
+                            src="https://picsum.photos/id/843/800/600"
+                            alt="Blue IKEA Sofa - Great Condition"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">dolores labore explicabo</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Blue IKEA Sofa - Great Condition</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Quia praesentium necessitatibus veniam sit qui voluptatem. Iusto et qui maiores voluptatem in. Velit...
+                                Moving out of state and need to find a good home for this comfortable 3-seater sofa. It&#039;s in excelle...
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Books</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Donnellybury</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Sofas &amp; Chairs</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Charlotte</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #ef4444">Urgent</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #7c3aed">Bundle</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
+                                <span>By Ms. Madeline Ratke</span>
                                 <div class="flex gap-3">
-                                    <span>👍 3</span>
-                                    <span>💬 3</span>
+                                    <span>👍 8</span>
+                                    <span>💬 1</span>
                                 </div>
                             </div>
 
                             <a
-                                href="items/93.html"
+                                href="items/1.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -373,36 +372,35 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/872/500/300"
-                            alt="ex blanditiis molestiae"
+                            src="https://picsum.photos/id/933/800/600"
+                            alt="Wooden Coffee Table - Needs Refinishing"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">ex blanditiis molestiae</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Wooden Coffee Table - Needs Refinishing</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Quas architecto repellat voluptas adipisci architecto. Omnis tempora quia sunt iusto maiores vel tem...
+                                Solid wood coffee table that has seen better days. Surface is scratched and could use refinishing, b...
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Apparel</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Lake Tevin</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Tables &amp; Desks</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">San Diego</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #10b981">Free</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #dc2626">Rare</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
+                                <span>By Admin User</span>
                                 <div class="flex gap-3">
-                                    <span>👍 3</span>
-                                    <span>💬 3</span>
+                                    <span>👍 7</span>
+                                    <span>💬 2</span>
                                 </div>
                             </div>
 
                             <a
-                                href="items/97.html"
+                                href="items/2.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -412,106 +410,26 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/743/600/400"
-                            alt="minus doloremque et"
+                            src="https://picsum.photos/id/513/800/600"
+                            alt="Queen Size Bed Frame - Metal"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">minus doloremque et</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Queen Size Bed Frame - Metal</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Autem praesentium magni aut distinctio. Inventore doloremque nulla delectus qui. Dolorem eligendi do...
+                                Black metal bed frame, queen size. Easy to assemble/disassemble. A few minor scratches but overall i...
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Electronics</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Lake Zena</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Beds &amp; Mattresses</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Philadelphia</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #10b981">Free</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
-                                <div class="flex gap-3">
-                                    <span>👍 3</span>
-                                    <span>💬 3</span>
-                                </div>
-                            </div>
-
-                            <a
-                                href="items/100.html"
-                                class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
-                            >
-                                View Details
-                            </a>
-                        </div>
-                    </div>
-                                    <div
-                        class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
-                        <img
-                            src="https://picsum.photos/id/770/600/400"
-                            alt="quo corporis ut"
-                            class="w-full h-48 object-cover"
-                        >
-
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">quo corporis ut</h3>
-                            <p class="text-gray-400 text-sm mb-4">
-                                Eveniet quod error commodi recusandae deserunt quia. Qui similique et et ullam accusamus. Iusto dolo...
-                            </p>
-
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Books</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">South Skylarborough</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
-                            </div>
-
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
-                                <div class="flex gap-3">
-                                    <span>👍 4</span>
-                                    <span>💬 3</span>
-                                </div>
-                            </div>
-
-                            <a
-                                href="items/60.html"
-                                class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
-                            >
-                                View Details
-                            </a>
-                        </div>
-                    </div>
-                                    <div
-                        class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
-                        <img
-                            src="https://picsum.photos/id/724/600/400"
-                            alt="officiis facilis iste"
-                            class="w-full h-48 object-cover"
-                        >
-
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">officiis facilis iste</h3>
-                            <p class="text-gray-400 text-sm mb-4">
-                                Praesentium saepe quis voluptatibus. Iusto autem hic dolores qui. Quia laudantium error facere repre...
-                            </p>
-
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Books</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">South Burleymouth</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
-                            </div>
-
-                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
+                                <span>By Katharina Morissette</span>
                                 <div class="flex gap-3">
                                     <span>👍 5</span>
                                     <span>💬 3</span>
@@ -519,7 +437,7 @@
                             </div>
 
                             <a
-                                href="items/61.html"
+                                href="items/3.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -529,36 +447,35 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/508/600/400"
-                            alt="esse qui eos"
+                            src="https://picsum.photos/id/859/800/600"
+                            alt="IKEA Billy Bookcase - White"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">esse qui eos</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">IKEA Billy Bookcase - White</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Voluptates ducimus numquam ut earum nisi. Nihil illum non rem commodi. Placeat excepturi aut facere...
+                                Classic Billy bookcase from IKEA. White color, 5 shelves. In good condition with minimal wear. Alrea...
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Tools</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Robelview</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Storage &amp; Shelving</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Miami</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #3b82f6">New</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #ec4899">Handmade</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
+                                <span>By Admin User</span>
                                 <div class="flex gap-3">
-                                    <span>👍 3</span>
-                                    <span>💬 3</span>
+                                    <span>👍 5</span>
+                                    <span>💬 2</span>
                                 </div>
                             </div>
 
                             <a
-                                href="items/62.html"
+                                href="items/4.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -568,36 +485,109 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/7/600/300"
-                            alt="blanditiis voluptate quisquam"
+                            src="https://picsum.photos/id/765/800/600"
+                            alt="Dell Laptop - Older Model but Works"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">blanditiis voluptate quisquam</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Dell Laptop - Older Model but Works</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Illo expedita quia atque nihil praesentium aut voluptas blanditiis. Vitae quidem minima quae et dele...
+                                Dell Inspiron laptop from 2018. Intel i5, 8GB RAM, 256GB SSD. Battery holds charge for about 2 hours...
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Furniture</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">West Pricefurt</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Computers &amp; Laptops</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Seattle</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #f59e0b">Vintage</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
+                                <span>By Miss Isabell Harris DDS</span>
+                                <div class="flex gap-3">
+                                    <span>👍 2</span>
+                                    <span>💬 4</span>
+                                </div>
+                            </div>
+
+                            <a
+                                href="items/5.html"
+                                class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
+                            >
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                                    <div
+                        class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                        <img
+                            src="https://picsum.photos/id/833/800/600"
+                            alt="32&quot; Samsung TV - Works Perfect"
+                            class="w-full h-48 object-cover"
+                        >
+
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">32&quot; Samsung TV - Works Perfect</h3>
+                            <p class="text-gray-400 text-sm mb-4">
+                                Samsung 32-inch LED TV. Upgraded to a bigger one so giving this away. No issues, picture quality is...
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">TVs &amp; Audio</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Baltimore</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #10b981">Free</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #8b5cf6">Like New</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                            </div>
+
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span>By Ms. Zella Quigley</span>
+                                <div class="flex gap-3">
+                                    <span>👍 6</span>
+                                    <span>💬 1</span>
+                                </div>
+                            </div>
+
+                            <a
+                                href="items/6.html"
+                                class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
+                            >
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                                    <div
+                        class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                        <img
+                            src="https://picsum.photos/id/46/800/600"
+                            alt="Microwave Oven - Still Working"
+                            class="w-full h-48 object-cover"
+                        >
+
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Microwave Oven - Still Working</h3>
+                            <p class="text-gray-400 text-sm mb-4">
+                                White microwave oven, 900W. Works perfectly fine, just upgrading to a newer model. Clean and ready t...
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Home Appliances</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">New York</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #059669">Eco-Friendly</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                            </div>
+
+                            <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                                <span>By Dr. Barry Gerhold</span>
                                 <div class="flex gap-3">
                                     <span>👍 4</span>
-                                    <span>💬 3</span>
+                                    <span>💬 1</span>
                                 </div>
                             </div>
 
                             <a
-                                href="items/73.html"
+                                href="items/7.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -607,36 +597,35 @@
                                     <div
                         class="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-200">
                         <img
-                            src="https://picsum.photos/id/490/500/300"
-                            alt="ratione quis molestiae"
+                            src="https://picsum.photos/id/472/800/600"
+                            alt="Box of Mystery Novels - About 20 Books"
                             class="w-full h-48 object-cover"
                         >
 
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-100 mb-2">ratione quis molestiae</h3>
+                            <h3 class="text-xl font-bold text-gray-100 mb-2">Box of Mystery Novels - About 20 Books</h3>
                             <p class="text-gray-400 text-sm mb-4">
-                                Ipsa corrupti aliquam non excepturi est eos nihil odit. Vero molestias et quia non hic necessitatibu...
+                                Collection of mystery and thriller novels. Authors include Agatha Christie, James Patterson, and mor...
                             </p>
 
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Apparel</span>
-                                <span
-                                    class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Lake Laurieton</span>
-                                <span
-                                    class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
+                                                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Fiction Books</span>
+                                                                                                    <span class="px-3 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">Atlanta</span>
+                                                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #8b5cf6">Like New</span>
+                                                                    <span class="px-3 py-1 text-white text-xs rounded-full" style="background-color: #7c3aed">Bundle</span>
+                                                                <span class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Available</span>
                             </div>
 
                             <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
-                                <span>By Test User</span>
+                                <span>By Mrs. Dakota Hayes III</span>
                                 <div class="flex gap-3">
-                                    <span>👍 7</span>
-                                    <span>💬 3</span>
+                                    <span>👍 6</span>
+                                    <span>💬 5</span>
                                 </div>
                             </div>
 
                             <a
-                                href="items/75.html"
+                                href="items/8.html"
                                 class="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition duration-200"
                             >
                                 View Details
@@ -664,57 +653,5 @@
 
 </div>
 
-<script type="text/javascript">
-var phpdebugbar = new PhpDebugBar.DebugBar({"theme":"auto","hideEmptyTabs":true});
-phpdebugbar.addTab("request", new PhpDebugBar.DebugBar.Tab({"icon":"tags","order":-100,"title":"Request", "widget": new PhpDebugBar.Widgets.HtmlVariableListWidget()}));
-phpdebugbar.addTab("messages", new PhpDebugBar.DebugBar.Tab({"icon":"list-alt","title":"Messages", "widget": new PhpDebugBar.Widgets.MessagesWidget()}));
-phpdebugbar.addIndicator("time", new PhpDebugBar.DebugBar.Indicator({"icon":"clock-o","tooltip":"Request Duration","link":"timeline"}), "right");
-phpdebugbar.addTab("timeline", new PhpDebugBar.DebugBar.Tab({"icon":"tasks","title":"Timeline", "widget": new PhpDebugBar.Widgets.TimelineWidget()}));
-phpdebugbar.addIndicator("memory", new PhpDebugBar.DebugBar.Indicator({"icon":"cogs","tooltip":"Memory Usage"}), "right");
-phpdebugbar.addTab("exceptions", new PhpDebugBar.DebugBar.Tab({"icon":"bug","title":"Exceptions", "widget": new PhpDebugBar.Widgets.ExceptionsWidget()}));
-phpdebugbar.addIndicator("version", new PhpDebugBar.DebugBar.Indicator({"icon":"laravel phpdebugbar-fab"}), "right");
-phpdebugbar.addTab("views", new PhpDebugBar.DebugBar.Tab({"icon":"leaf","title":"Views", "widget": new PhpDebugBar.Widgets.TemplatesWidget()}));
-phpdebugbar.addTab("queries", new PhpDebugBar.DebugBar.Tab({"icon":"database","title":"Queries", "widget": new PhpDebugBar.Widgets.LaravelQueriesWidget()}));
-phpdebugbar.addTab("models", new PhpDebugBar.DebugBar.Tab({"icon":"cubes","title":"Models", "widget": new PhpDebugBar.Widgets.TableVariableListWidget()}));
-phpdebugbar.addTab("livewire", new PhpDebugBar.DebugBar.Tab({"icon":"bolt","title":"Livewire", "widget": new PhpDebugBar.Widgets.VariableListWidget()}));
-phpdebugbar.addTab("emails", new PhpDebugBar.DebugBar.Tab({"icon":"inbox","title":"Mails", "widget": new PhpDebugBar.Widgets.MailsWidget()}));
-phpdebugbar.addTab("gate", new PhpDebugBar.DebugBar.Tab({"icon":"list-alt","title":"Gate", "widget": new PhpDebugBar.Widgets.MessagesWidget()}));
-phpdebugbar.addIndicator("currentrequest", new PhpDebugBar.DebugBar.Indicator({"icon":"share","link":"request"}), "right");
-phpdebugbar.setDataMap({
-"request": ["request.data", {}],
-"messages": ["messages.messages", []],
-"messages:badge": ["messages.count", null],
-"time": ["time.duration_str", '0ms'],
-"timeline": ["time", {}],
-"memory": ["memory.peak_usage_str", '0B'],
-"exceptions": ["exceptions.exceptions", []],
-"exceptions:badge": ["exceptions.count", null],
-"version": ["laravel.version", ],
-"version:tooltip": ["laravel.tooltip", {}],
-"views": ["views", []],
-"views:badge": ["views.nb_templates", 0],
-"queries": ["queries", []],
-"queries:badge": ["queries.nb_statements", 0],
-"models": ["models", {}],
-"models:badge": ["models.count", 0],
-"livewire": ["livewire.data", {}],
-"livewire:badge": ["livewire.count", 0],
-"emails": ["symfonymailer_mails.mails", []],
-"emails:badge": ["symfonymailer_mails.count", null],
-"gate": ["gate.messages", []],
-"gate:badge": ["gate.count", null],
-"request:badge": ["request.badge", null],
-"currentrequest": ["request.data.uri", ],
-"currentrequest:tooltip": ["request.tooltip", {}]
-});
-phpdebugbar.restoreState();
-phpdebugbar.enableAjaxHandlerTab();
-phpdebugbar.ajaxHandler = new PhpDebugBar.AjaxHandler(phpdebugbar, undefined, true);
-phpdebugbar.ajaxHandler.bindToFetch();
-phpdebugbar.ajaxHandler.bindToXHR();
-phpdebugbar.setOpenHandler(new PhpDebugBar.OpenHandler({"url":"http:\/\/localhost:8038\/_debugbar\/open"}));
-phpdebugbar.addDataSet({"__meta":{"id":"01KC9TDKF5RV26RM6XBDFA84EQ","datetime":"2025-12-12 17:40:57","utime":1765561257.445317,"method":"GET","uri":"\/","ip":"172.23.0.1"},"messages":{"count":0,"messages":[]},"time":{"count":5,"start":1765561257.328905,"end":1765561257.445332,"duration":0.11642694473266602,"duration_str":"116ms","measures":[{"label":"Booting","start":1765561257.328905,"relative_start":0,"end":1765561257.395687,"relative_end":1765561257.395687,"duration":0.06678199768066406,"duration_str":"66.78ms","memory":0,"memory_str":"0B","params":[],"collector":"time","group":null},{"label":"Application","start":1765561257.395704,"relative_start":0.06679892539978027,"end":1765561257.445333,"relative_end":9.5367431640625e-7,"duration":0.04962897300720215,"duration_str":"49.63ms","memory":0,"memory_str":"0B","params":[],"collector":"time","group":null},{"label":"Routing","start":1765561257.401288,"relative_start":0.07238292694091797,"end":1765561257.402701,"relative_end":1765561257.402701,"duration":0.0014128684997558594,"duration_str":"1.41ms","memory":0,"memory_str":"0B","params":[],"collector":null,"group":null},{"label":"Preparing Response","start":1765561257.434859,"relative_start":0.10595393180847168,"end":1765561257.4445,"relative_end":1765561257.4445,"duration":0.009640932083129883,"duration_str":"9.64ms","memory":0,"memory_str":"0B","params":[],"collector":null,"group":null},{"label":"View: welcome","start":1765561257.435236,"relative_start":0.10633087158203125,"end":1765561257.435236,"relative_end":1765561257.435236,"duration":0,"duration_str":"0\u03bcs","memory":0,"memory_str":"0B","params":[],"collector":"views","group":"View"}]},"memory":{"peak_usage":2384144,"peak_usage_str":"2MB"},"exceptions":{"count":0,"exceptions":[]},"laravel":{"version":"12.x","tooltip":{"Laravel Version":"12.42.0","PHP Version":"8.5.0","Environment":"local","Debug Mode":"Enabled","URL":"localhost:8038","Timezone":"UTC","Locale":"en"}},"views":{"count":1,"nb_templates":1,"templates":[{"name":"welcome","param_count":null,"params":[],"start":1765561257.435204,"type":"blade","hash":"blade\/var\/www\/html\/resources\/views\/welcome.blade.phpwelcome","xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fresources%2Fviews%2Fwelcome.blade.php\u0026line=1","ajax":false,"filename":"welcome.blade.php","line":"?"}}]},"queries":{"count":5,"nb_statements":5,"nb_visible_statements":5,"nb_excluded_statements":0,"nb_failed_statements":0,"accumulated_duration":0.00227,"accumulated_duration_str":"2.27ms","memory_usage":0,"memory_usage_str":null,"statements":[{"sql":"select * from `sessions` where `id` = \u002779p2j5gV6ENwwMBDdll5PpryGi1IGF9j6kE4cyFN\u0027 limit 1","type":"query","params":[],"bindings":["79p2j5gV6ENwwMBDdll5PpryGi1IGF9j6kE4cyFN"],"hints":null,"show_copy":true,"backtrace":[{"index":15,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Session\/DatabaseSessionHandler.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Session\/DatabaseSessionHandler.php","line":96},{"index":16,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Session\/Store.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Session\/Store.php","line":117},{"index":17,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Session\/Store.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Session\/Store.php","line":105},{"index":18,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Session\/Store.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Session\/Store.php","line":89},{"index":19,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Session\/Middleware\/StartSession.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Session\/Middleware\/StartSession.php","line":146}],"start":1765561257.4050632,"duration":0.00116,"duration_str":"1.16ms","slow":false,"memory":0,"memory_str":null,"filename":"DatabaseSessionHandler.php:96","source":{"index":15,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Session\/DatabaseSessionHandler.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Session\/DatabaseSessionHandler.php","line":96},"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fvendor%2Flaravel%2Fframework%2Fsrc%2FIlluminate%2FSession%2FDatabaseSessionHandler.php\u0026line=96","ajax":false,"filename":"DatabaseSessionHandler.php","line":"96"},"connection":"laravel","explain":null,"start_percent":0,"width_percent":51.101},{"sql":"select * from `items` where `status` = 10 order by `created_at` desc limit 10","type":"query","params":[],"bindings":[10],"hints":null,"show_copy":true,"backtrace":[{"index":15,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},{"index":16,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","line":46},{"index":17,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":265},{"index":18,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":211},{"index":19,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","line":822}],"start":1765561257.4134111,"duration":0.00029,"duration_str":"290\u03bcs","slow":false,"memory":0,"memory_str":null,"filename":"IndexController.php:16","source":{"index":15,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FHttp%2FControllers%2FIndexController.php\u0026line=16","ajax":false,"filename":"IndexController.php","line":"16"},"connection":"laravel","explain":null,"start_percent":51.101,"width_percent":12.775},{"sql":"select * from `users` where `users`.`id` in (1, 14)","type":"query","params":[],"bindings":[],"hints":null,"show_copy":true,"backtrace":[{"index":20,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},{"index":21,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","line":46},{"index":22,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":265},{"index":23,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":211},{"index":24,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","line":822}],"start":1765561257.419061,"duration":0.00022,"duration_str":"220\u03bcs","slow":false,"memory":0,"memory_str":null,"filename":"IndexController.php:16","source":{"index":20,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FHttp%2FControllers%2FIndexController.php\u0026line=16","ajax":false,"filename":"IndexController.php","line":"16"},"connection":"laravel","explain":null,"start_percent":63.877,"width_percent":9.692},{"sql":"select * from `votes` where `votes`.`item_id` in (60, 61, 62, 73, 75, 82, 93, 97, 100, 101)","type":"query","params":[],"bindings":[],"hints":null,"show_copy":true,"backtrace":[{"index":20,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},{"index":21,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","line":46},{"index":22,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":265},{"index":23,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":211},{"index":24,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","line":822}],"start":1765561257.4232671,"duration":0.00033,"duration_str":"330\u03bcs","slow":false,"memory":0,"memory_str":null,"filename":"IndexController.php:16","source":{"index":20,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FHttp%2FControllers%2FIndexController.php\u0026line=16","ajax":false,"filename":"IndexController.php","line":"16"},"connection":"laravel","explain":null,"start_percent":73.568,"width_percent":14.537},{"sql":"select * from `comments` where `comments`.`item_id` in (60, 61, 62, 73, 75, 82, 93, 97, 100, 101)","type":"query","params":[],"bindings":[],"hints":null,"show_copy":true,"backtrace":[{"index":20,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},{"index":21,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/ControllerDispatcher.php","line":46},{"index":22,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":265},{"index":23,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Route.php","line":211},{"index":24,"namespace":null,"name":"vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","file":"\/var\/www\/html\/vendor\/laravel\/framework\/src\/Illuminate\/Routing\/Router.php","line":822}],"start":1765561257.430752,"duration":0.00027,"duration_str":"270\u03bcs","slow":false,"memory":0,"memory_str":null,"filename":"IndexController.php:16","source":{"index":20,"namespace":null,"name":"app\/Http\/Controllers\/IndexController.php","file":"\/var\/www\/html\/app\/Http\/Controllers\/IndexController.php","line":16},"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FHttp%2FControllers%2FIndexController.php\u0026line=16","ajax":false,"filename":"IndexController.php","line":"16"},"connection":"laravel","explain":null,"start_percent":88.106,"width_percent":11.894}]},"models":{"data":{"App\\Models\\Vote":{"retrieved":81,"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FModels%2FVote.php\u0026line=1","ajax":false,"filename":"Vote.php","line":"?"}},"App\\Models\\Comment":{"retrieved":27,"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FModels%2FComment.php\u0026line=1","ajax":false,"filename":"Comment.php","line":"?"}},"App\\Models\\Item":{"retrieved":10,"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FModels%2FItem.php\u0026line=1","ajax":false,"filename":"Item.php","line":"?"}},"App\\Models\\User":{"retrieved":2,"xdebug_link":{"url":"phpstorm:\/\/open?file=%2Fmnt%2F256-m2%2Fprojects%2Ffree-share-platform%2Fapp%2FModels%2FUser.php\u0026line=1","ajax":false,"filename":"User.php","line":"?"}}},"count":120,"key_map":{"retrieved":"Retrieved","created":"Created","updated":"Updated","deleted":"Deleted"},"is_counter":true,"badges":{"retrieved":120}},"livewire":{"data":[],"count":0},"symfonymailer_mails":{"count":0,"mails":[]},"gate":{"count":0,"messages":[]},"request":{"data":{"status":"200 OK","full_url":"http:\/\/localhost:8038","action_name":"home","controller_action":"App\\Http\\Controllers\\IndexController","uri":"GET \/","controller":"App\\Http\\Controllers\\IndexController","middleware":"web","duration":"117ms","peak_memory":"4MB","response":"text\/html; charset=utf-8","request_format":"html","request_query":"\u003Cpre class=sf-dump id=sf-dump-1854476350 data-indent-pad=\u0022  \u0022\u003E[]\n\u003C\/pre\u003E\u003Cscript\u003ESfdump(\u0022sf-dump-1854476350\u0022, {\u0022maxDepth\u0022:0})\u003C\/script\u003E\n","request_request":"\u003Cpre class=sf-dump id=sf-dump-1207018102 data-indent-pad=\u0022  \u0022\u003E[]\n\u003C\/pre\u003E\u003Cscript\u003ESfdump(\u0022sf-dump-1207018102\u0022, {\u0022maxDepth\u0022:0})\u003C\/script\u003E\n","request_headers":"\u003Cpre class=sf-dump id=sf-dump-1682838976 data-indent-pad=\u0022  \u0022\u003E\u003Cspan class=sf-dump-note\u003Earray:5\u003C\/span\u003E [\u003Csamp data-depth=1 class=sf-dump-expanded\u003E\n  \u0022\u003Cspan class=sf-dump-key\u003Ehost\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002214 characters\u0022\u003Elocalhost:8038\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n  \u0022\u003Cspan class=sf-dump-key\u003Euser-agent\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002211 characters\u0022\u003EWget\/1.21.4\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n  \u0022\u003Cspan class=sf-dump-key\u003Eaccept\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u00223 characters\u0022\u003E*\/*\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n  \u0022\u003Cspan class=sf-dump-key\u003Eaccept-encoding\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u00228 characters\u0022\u003Eidentity\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n  \u0022\u003Cspan class=sf-dump-key\u003Econnection\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002210 characters\u0022\u003EKeep-Alive\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n\u003C\/samp\u003E]\n\u003C\/pre\u003E\u003Cscript\u003ESfdump(\u0022sf-dump-1682838976\u0022, {\u0022maxDepth\u0022:0})\u003C\/script\u003E\n","request_cookies":"\u003Cpre class=sf-dump id=sf-dump-1544969563 data-indent-pad=\u0022  \u0022\u003E[]\n\u003C\/pre\u003E\u003Cscript\u003ESfdump(\u0022sf-dump-1544969563\u0022, {\u0022maxDepth\u0022:0})\u003C\/script\u003E\n","response_headers":"\u003Cpre class=sf-dump id=sf-dump-1793301487 data-indent-pad=\u0022  \u0022\u003E\u003Cspan class=sf-dump-note\u003Earray:3\u003C\/span\u003E [\u003Csamp data-depth=1 class=sf-dump-expanded\u003E\n  \u0022\u003Cspan class=sf-dump-key\u003Econtent-type\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002224 characters\u0022\u003Etext\/html; charset=utf-8\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n  \u0022\u003Cspan class=sf-dump-key\u003Ecache-control\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002217 characters\u0022\u003Eno-cache, private\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n  \u0022\u003Cspan class=sf-dump-key\u003Edate\u003C\/span\u003E\u0022 =\u003E \u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=2 class=sf-dump-compact\u003E\n    \u003Cspan class=sf-dump-index\u003E0\u003C\/span\u003E =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002229 characters\u0022\u003EFri, 12 Dec 2025 17:40:57 GMT\u003C\/span\u003E\u0022\n  \u003C\/samp\u003E]\n\u003C\/samp\u003E]\n\u003C\/pre\u003E\u003Cscript\u003ESfdump(\u0022sf-dump-1793301487\u0022, {\u0022maxDepth\u0022:0})\u003C\/script\u003E\n","session_attributes":"\u003Cpre class=sf-dump id=sf-dump-2112604696 data-indent-pad=\u0022  \u0022\u003E\u003Cspan class=sf-dump-note\u003Earray:1\u003C\/span\u003E [\u003Csamp data-depth=1 class=sf-dump-expanded\u003E\n  \u0022\u003Cspan class=sf-dump-key\u003E_token\u003C\/span\u003E\u0022 =\u003E \u0022\u003Cspan class=sf-dump-str title=\u002240 characters\u0022\u003EhvxjQdQGBYapcUgClw98FrZ5CAIu4NqIpLriwYtl\u003C\/span\u003E\u0022\n\u003C\/samp\u003E]\n\u003C\/pre\u003E\u003Cscript\u003ESfdump(\u0022sf-dump-2112604696\u0022, {\u0022maxDepth\u0022:0})\u003C\/script\u003E\n"},"tooltip":{"status":"200 OK","full_url":"http:\/\/localhost:8038","action_name":"home","controller_action":"App\\Http\\Controllers\\IndexController"},"badge":null}}, "01KC9TDKF5RV26RM6XBDFA84EQ");
-
-</script>
 </body>
 </html>
