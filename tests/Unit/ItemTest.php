@@ -192,7 +192,7 @@ describe('constants', function () {
     test('placeholder image URL is properly formatted', function () {
         expect(Item::PLACEHOLDER_IMAGE_URL)
             ->toStartWith('https://')
-            ->toContain('placeholder.com')
-            ->toContain('No+Image');
+            ->toContain('placehold.co')
+            ->toContain('600x400');
     });
 });
